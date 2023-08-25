@@ -1,24 +1,24 @@
-import logo from './logo.svg';
 import './App.css';
+import { Canvas } from '@react-three/fiber';
+import { TrackballControls } from '@react-three/drei';
+import { Stars } from '@react-three/drei'
 
 function App() {
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <>
+    <div className="Game-display">
+      <Canvas>
+        <color attach="background" args={['#191920']} />
+        <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+        <TrackballControls makeDefault />
+        <mesh>
+          <coneGeometry />
+          <meshBasicMaterial color="red"/>
+        </mesh>
+      </Canvas>
     </div>
+    </>
   );
 }
 
