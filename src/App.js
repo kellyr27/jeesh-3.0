@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { Line, TrackballControls } from '@react-three/drei';
 import { Stars, QuadraticBezierLine } from '@react-three/drei'
 import ArenaGrid from './Components/ArenaGrid';
+import StarField from './Components/StarField';
 
 function App() {
   
@@ -15,7 +16,7 @@ function App() {
         <TrackballControls makeDefault rotateSpeed='3'/>
         <axesHelper args={[20]}/>
         <mesh visible
-          position={[1,1,1]}
+          position={[21,21,21]}
           rotation={[Math.PI / 2, 0, 0]}
         >
           <coneGeometry />
@@ -23,14 +24,14 @@ function App() {
         </mesh>
 
         <ArenaGrid />
-        
-        <QuadraticBezierLine 
+        <StarField />
+        {/* <QuadraticBezierLine 
           start={[0, 0, 0]} 
           end={[10, 0, 10]} 
           mid={[5, 5, 5]}
           color="blue"
           lineWidth={2}
-        />
+        /> */}
       </Canvas>
     </div>
     </>
