@@ -4,9 +4,16 @@ import { Line, TrackballControls } from '@react-three/drei';
 import { Stars, QuadraticBezierLine } from '@react-three/drei'
 import ArenaGrid from './Components/ArenaGrid';
 import StarField from './Components/StarField';
+import SoldierCone from './Components/SoldierCone';
 
 function App() {
   
+  const starCoords = [
+    [0,0,0],
+    [2,2,2],
+    [2,3,3]
+  ]
+
   return (
     <>
     <div className="Game-display">
@@ -15,16 +22,10 @@ function App() {
         <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
         <TrackballControls makeDefault rotateSpeed='3'/>
         <axesHelper args={[20]}/>
-        <mesh visible
-          position={[21,21,21]}
-          rotation={[Math.PI / 2, 0, 0]}
-        >
-          <coneGeometry />
-          <meshBasicMaterial color="red"/>
-        </mesh>
-
         <ArenaGrid />
-        <StarField />
+        <StarField starCoords={starCoords}/>
+        <SoldierCone initialPosition={[[5,5,10],[0,0,1]]} soldierId={[0,1]}/>
+        <SoldierCone initialPosition={[[4,5,10],[0,0,1]]} soldierId={[0,2]}/>
         {/* <QuadraticBezierLine 
           start={[0, 0, 0]} 
           end={[10, 0, 10]} 

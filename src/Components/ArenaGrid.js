@@ -49,21 +49,21 @@ export default function ArenaGrid() {
                     <Line
                         points={[[0,i,j],[ARENA_SPECS.ARENA_LENGTH,i,j]]}
                         color='yellow'
-                        linewidth={0.2}
+                        linewidth={0.7}
                     />
                 )
                 lines.push(
                     <Line
                         points={[[i,0,j],[i,ARENA_SPECS.ARENA_LENGTH,j]]}
                         color='yellow'
-                        linewidth={0.2}
+                        linewidth={0.7}
                     />
                 )
                 lines.push(
                     <Line
                         points={[[i,j,0],[i,j,ARENA_SPECS.ARENA_LENGTH]]}
                         color='yellow'
-                        linewidth={0.2}
+                        linewidth={0.7}
                     />
                 )
             }
