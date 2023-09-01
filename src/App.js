@@ -6,6 +6,7 @@ import ArenaGrid from './Components/ArenaGrid';
 import StarField from './Components/StarField';
 import SoldierCone from './Components/SoldierCone';
 import Army from './Components/Army';
+import raycaster from './Classes/Raycaster';
 
 function App() {
   
@@ -15,10 +16,18 @@ function App() {
     [2,3,3]
   ]
 
+  const onContextMenuHandler = (e) => {
+    raycaster.updateOnContextMenu()
+
+    e.stopPropagation()
+  }
+
   return (
     <>
     <div className="Game-display">
-      <Canvas>
+      <Canvas
+        onContextMenu={onContextMenuHandler}
+      >
         <color attach="background" args={['#191920']} />
         <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
         <TrackballControls makeDefault rotateSpeed='3'/>
