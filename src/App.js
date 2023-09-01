@@ -7,6 +7,7 @@ import StarField from './Components/StarField';
 import SoldierCone from './Components/SoldierCone';
 import Army from './Components/Army';
 import raycaster from './Classes/Raycaster';
+import { useControls } from 'leva'
 
 function App() {
   
@@ -15,6 +16,14 @@ function App() {
     [2,2,2],
     [2,3,3]
   ]
+
+  const {colorNormal, colorHovered, colorSelected} = useControls('Army 1', {
+    colorNormal: '#ff0000',
+    colorHovered: '#800080',
+    colorSelected: '#008000'
+  })
+  raycaster.setColorScheme(colorNormal, colorHovered, colorSelected)
+
 
   const onContextMenuHandler = (e) => {
     raycaster.updateOnContextMenu()
@@ -34,7 +43,7 @@ function App() {
         <axesHelper args={[20]}/>
         <ArenaGrid />
         <StarField starCoords={starCoords}/>
-        <Army />
+        <Army colorScheme={{colorNormal, colorHovered, colorSelected}}/>
         {/* <SoldierCone initialPosition={[[5,5,10],[0,0,1]]} soldierId={[0,1]}/>
         <SoldierCone initialPosition={[[4,5,10],[0,0,1]]} soldierId={[0,2]}/> */}
         {/* <QuadraticBezierLine 

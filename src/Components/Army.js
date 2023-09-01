@@ -1,7 +1,8 @@
 import SoldierCone from "./SoldierCone"
 import raycaster from "../Classes/Raycaster"
 
-export default function Army() {
+
+export default function Army({colorScheme}) {
     const startingPositions = [
         [[4,5,10],[0,0,1]],
         [[5,5,10],[0,0,1]],
@@ -42,6 +43,8 @@ export default function Army() {
         e.stopPropagation()
     }
 
+    
+
 
     return (
         <>
@@ -54,7 +57,7 @@ export default function Army() {
                 {startingPositions.map((startingPosition, index) => {
                     return (
                         <>
-                            <SoldierCone initialPosition={startingPosition} soldierId={index}/>
+                            <SoldierCone initialPosition={startingPosition} soldierId={index} colorScheme={colorScheme}/>
                         </>
                     )
                 })}

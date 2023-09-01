@@ -1,9 +1,10 @@
 import { centreCoord } from "../globals"
 import { useState, useRef, useEffect } from "react"
 
-export default function SoldierCone({initialPosition, soldierId}) {
+export default function SoldierCone({initialPosition, soldierId, colorScheme}) {
     
     const ref = useRef()
+    const {colorNormal, colorHovered, colorSelected} = colorScheme
     const [initialCoord, initialDirection] = initialPosition
     const [isSelected, setIsSelected] = useState(false)
     const [isHovered, setIsHovered] = useState(false)
@@ -60,7 +61,7 @@ export default function SoldierCone({initialPosition, soldierId}) {
 
             >
                 <coneGeometry args={[0.4, 0.8]}/>
-                <meshBasicMaterial color={'red'}/>
+                <meshBasicMaterial color={colorNormal}/>
             </mesh>
             {/* <mesh visible
                 position={centreCoord(initialCoord)}

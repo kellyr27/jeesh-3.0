@@ -6,16 +6,22 @@ class UserRaycaster {
         this.hoveredObject = null
     }
 
+    setColorScheme(colorNormal, colorHovered, colorSelected) {
+        this.colorNormal = colorNormal
+        this.colorHovered = colorHovered
+        this.colorSelected = colorSelected
+    }
+
     setColorNormal(obj) {
-        obj.material.color.set('red')
+        obj.material.color.set(this.colorNormal)
     }
 
     setColorSelected(obj) {
-        obj.material.color.set('green')
+        obj.material.color.set(this.colorSelected)
     }
 
     setColorHovered(obj) {
-        obj.material.color.set('purple')
+        obj.material.color.set(this.colorHovered)
     }
 
     updateOnClick (newIndex, newObject) {
