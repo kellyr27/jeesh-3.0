@@ -5,6 +5,7 @@ import { Stars, QuadraticBezierLine } from '@react-three/drei'
 import ArenaGrid from './Components/ArenaGrid';
 import StarField from './Components/StarField';
 import SoldierCone from './Components/SoldierCone';
+import Army from './Components/Army';
 
 function App() {
   
@@ -24,8 +25,9 @@ function App() {
         <axesHelper args={[20]}/>
         <ArenaGrid />
         <StarField starCoords={starCoords}/>
-        <SoldierCone initialPosition={[[5,5,10],[0,0,1]]} soldierId={[0,1]}/>
-        <SoldierCone initialPosition={[[4,5,10],[0,0,1]]} soldierId={[0,2]}/>
+        <Army />
+        {/* <SoldierCone initialPosition={[[5,5,10],[0,0,1]]} soldierId={[0,1]}/>
+        <SoldierCone initialPosition={[[4,5,10],[0,0,1]]} soldierId={[0,2]}/> */}
         {/* <QuadraticBezierLine 
           start={[0, 0, 0]} 
           end={[10, 0, 10]} 

@@ -8,42 +8,42 @@ export default function SoldierCone({initialPosition, soldierId}) {
     const [isSelected, setIsSelected] = useState(false)
     const [isHovered, setIsHovered] = useState(false)
 
-    const updateColor = () => {
-        if (isSelected) {
-            ref.current.material.color.set('green')
-        } else {
-            if (isHovered) {
-                ref.current.material.color.set('purple')
-            } else {
-                ref.current.material.color.set('red')
-            }
-        }
-    }
+    // const updateColor = () => {
+    //     if (isSelected) {
+    //         ref.current.material.color.set('green')
+    //     } else {
+    //         if (isHovered) {
+    //             ref.current.material.color.set('purple')
+    //         } else {
+    //             ref.current.material.color.set('red')
+    //         }
+    //     }
+    // }
 
-    useEffect(() => {
-        updateColor()
-    }, [isSelected, isHovered])
+    // useEffect(() => {
+    //     updateColor()
+    // }, [isSelected, isHovered])
 
 
-    const onClickHandler = (e) => {
-        setIsSelected(!isSelected)
-        e.stopPropagation()
-    }
+    // const onClickHandler = (e) => {
+    //     setIsSelected(!isSelected)
+    //     e.stopPropagation()
+    // }
 
-    const onPointerOverHandler = (e) => {
-        setIsHovered(true)
-        e.stopPropagation()
-    }
+    // const onPointerOverHandler = (e) => {
+    //     setIsHovered(true)
+    //     e.stopPropagation()
+    // }
 
-    const onPointerOut = (e) => {
-        setIsHovered(false)
-        e.stopPropagation()
-    }
+    // const onPointerOut = (e) => {
+    //     setIsHovered(false)
+    //     e.stopPropagation()
+    // }
 
-    const onContextMenu = (e) => {
-        setIsSelected(false)
-        e.stopPropagation()
-    }
+    // const onContextMenu = (e) => {
+    //     setIsSelected(false)
+    //     e.stopPropagation()
+    // }
 
 
     return (
@@ -53,10 +53,10 @@ export default function SoldierCone({initialPosition, soldierId}) {
                 soldierId={soldierId}
                 position={centreCoord(initialCoord)}
                 rotation={[0, 0, 0]}
-                onClick={onClickHandler}
-                onContextMenu={onContextMenu}
-                onPointerOver={onPointerOverHandler}
-                onPointerOut={onPointerOut}
+                // onClick={onClickHandler}
+                // onContextMenu={onContextMenu}
+                // onPointerOver={onPointerOverHandler}
+                // onPointerOut={onPointerOut}
 
             >
                 <coneGeometry args={[0.4, 0.8]}/>
