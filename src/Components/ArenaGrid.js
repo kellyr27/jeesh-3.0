@@ -37,7 +37,82 @@ const LineCube = (bottomCornerEdge, size, color, lineWidth) => {
     return lines
 }
 
+class CubeNode {
+    constructor(coord) {
+        this.coord = coord
+    }
+}
 
+class LineEdge {
+    constructor(node1, node2) {
+        this.lineObj = null
+        this.createLine(node1, node2)
+    }
+
+    createLine (node1, node2) {
+        const avgX = (node1[0] + node2[0]) / 2
+        const avgY = (node1[1] + node2[1]) / 2
+        const avgZ = (node1[2] + node2[2]) / 2
+
+        if (node1[0] === node2[0]) {
+            this.lineObj = (
+                <Line
+                    points={[
+                        [node1[0] - ARENA_SPECS.CUBE_LENGTH / 2,avgY,avgZ],
+                        [node1[0] + ARENA_SPECS.CUBE_LENGTH / 2,avgY,avgZ]]}
+                    color='green'
+                    linewidth={0.7}
+                />
+            )
+        } else if (node1[1] === node2[1]) {
+            this.lineObj = (
+                <Line
+                    points={[
+                        [avgX,node1[1] - ARENA_SPECS.CUBE_LENGTH / 2,avgZ],
+                        [avgX,node1[1] + ARENA_SPECS.CUBE_LENGTH / 2,avgZ]]}
+                    color='green'
+                    linewidth={0.7}
+                />
+            )
+        } else if (node1[2] === node2[2]) {
+            this.lineObj = (
+                <Line
+                    points={[
+                        [avgX,avgY,node1[2] - ARENA_SPECS.CUBE_LENGTH / 2],
+                        [avgX,avgY,node1[2] + ARENA_SPECS.CUBE_LENGTH / 2]]}
+                    color='green'
+                    linewidth={0.7}
+                />
+            )
+        }
+    }
+}
+
+
+class ArenaGraph {
+    constructor () {
+        this.nodes = []
+        this.createNodes()
+    }
+
+    createNodes () {
+        for (let i = -1; i < ARENA_SPECS.ARENA_LENGTH + 1; i++) {
+            const iRow = []
+            for (let j = -1; j < ARENA_SPECS.ARENA_LENGTH + 1; j++) {
+                const jRow = []
+                for (let k = -1; k < ARENA_SPECS.ARENA_LENGTH + 1; k++) {
+                    jRow.push(new CubeNode([i,j,k]))
+                }
+                iRow.push(jRow)
+            }
+            this.nodes.push(iRow)
+        }
+    }
+
+    createEdges () {
+        
+    }
+}
 
 export default function ArenaGrid() {
 
@@ -86,7 +161,7 @@ export default function ArenaGrid() {
         return coords
     }
 
-    console.log('innerThirds',innerThirds())
+    
 
     return (
         <>

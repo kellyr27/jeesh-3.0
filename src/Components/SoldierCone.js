@@ -66,10 +66,9 @@ export default function SoldierCone({initialPosition, soldierId, colorScheme}) {
             {/* <mesh visible
                 position={centreCoord(initialCoord)}
                 rotation={[0, 0, 0]}
-                onClick={(e) => console.log('click')}
             >
                 <coneGeometry args={[0.4, 0.8]}/>
-                <meshBasicMaterial color="blue" wireframe/>
+                <meshBasicMaterial color="#eee" wireframe/>
             </mesh> */}
         </>
     )
