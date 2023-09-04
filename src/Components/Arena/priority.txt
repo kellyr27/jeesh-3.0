@@ -1,0 +1,8 @@
+Priority of lines (Higher the number, higher the priority)
+
+1. All Grid Lines - soft, can be turned off by GUI Panel
+2. Major Grid Lines 
+3. Attack Zone Lines
+4. Border Line (11x11x11)
+5. Door Line
+6. Hovered Move Line - temporary

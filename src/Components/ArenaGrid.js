@@ -41,6 +41,30 @@ const LineCube = (bottomCornerEdge, size, color, lineWidth) => {
     return lines
 }
 
+/**
+ * Checks if a number is inbetween two values [low, high)
+ */
+const isBetween = (num, low, high) => {
+    if ((num >= low) && (num < high)) {
+        return true
+    } else {
+        return false
+    }
+}
+
+/**
+ * Checks if Cube coordinate is outside the Arena
+ */
+const checkIfInArena = (coord) => {
+    for (const axes of coord) {
+        if (!isBetween(axes, 0, ARENA_SPECS.ARENA_LENGTH)) {
+            return false
+        }
+    }
+    return true
+
+}
+
 class CubeNode {
     constructor(coord) {
         this.coord = coord
@@ -56,6 +80,9 @@ class CubeNode {
         const jDiff = Math.abs(a.coord[1] - b.coord[1])
         const kDiff = Math.abs(a.coord[2] - b.coord[2])
 
+        if (!checkIfInArena(a.coord) && !checkIfInArena(b.coord)) {
+            return false
+        }
 
         if ((iDiff === 1) && (jDiff === 1) && (kDiff === 0)) {
             return true
@@ -196,56 +223,9 @@ export default function ArenaGrid() {
     const arena = new ArenaGraph()
     arena.getEdges()
 
-    const AllLines = () => {
-        let lines = []
-        for (let i = 0; i <= ARENA_SPECS.ARENA_LENGTH; i++) {
-            for (let j = 0; j <= ARENA_SPECS.ARENA_LENGTH; j++) {
-                lines.push(
-                    <Line
-                        points={[[0,i,j],[ARENA_SPECS.ARENA_LENGTH,i,j]]}
-                        color='yellow'
-                        linewidth={0.7}
-                    />
-                )
-                lines.push(
-                    <Line
-                        points={[[i,0,j],[i,ARENA_SPECS.ARENA_LENGTH,j]]}
-                        color='yellow'
-                        linewidth={0.7}
-                    />
-                )
-                lines.push(
-                    <Line
-                        points={[[i,j,0],[i,j,ARENA_SPECS.ARENA_LENGTH]]}
-                        color='yellow'
-                        linewidth={0.7}
-                    />
-                )
-            }
-        }
-        return lines
-    }
-
-    const innerThirds = () => {
-        const coords = []
-
-        for (let i = 1; i < ARENA_SPECS.ARENA_LENGTH - 2; i += 3) {
-            for (let j = 1; j < ARENA_SPECS.ARENA_LENGTH - 2; j += 3) {
-                for (let k = 1; k < ARENA_SPECS.ARENA_LENGTH - 2; k += 3) {
-                    coords.push([i,j,k])
-                }
-            }
-        }
-
-
-        return coords
-    }
-
-    
-
     return (
         <>
-            {/* {AllLines()} */}
+            {AllLines()}
             {/* {LineCube([0,0,0],ARENA_SPECS.ARENA_LENGTH, 'Yellow', 2)} */}
             {/* {innerThirds().map((el, index) => {
                 return (
