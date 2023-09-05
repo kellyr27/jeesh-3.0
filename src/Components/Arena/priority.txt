@@ -1,8 +1,10 @@
 Priority of lines (Higher the number, higher the priority)
 
-1. All Grid Lines - soft, can be turned off by GUI Panel
-2. Major Grid Lines 
-3. Attack Zone Lines
-4. Border Line (11x11x11)
-5. Door Line
-6. Hovered Move Line - temporary
+1. All Grid Lines - soft, can be turned off by GUI Panel - CONSTANT
+2. Major Grid Lines - CONSTANT
+3. Attack Zone Line (Army 1) 
+4. Attack Zone Line (Army 2)
+5. Attack Zone Line Shared (Army 1 & 2)
+6. Border Line (11x11x11) - CONSTANT
+7. Door Line - CONSTANT
+8. Hovered Move Line - temporary
