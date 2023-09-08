@@ -4,7 +4,6 @@ import { Line, TrackballControls } from '@react-three/drei';
 import { Stars, QuadraticBezierLine } from '@react-three/drei'
 import ArenaGrid from './Components/ArenaGrid';
 import StarField from './Components/StarField';
-import SoldierCone from './Components/SoldierCone';
 import Army from './Components/Army';
 import raycaster from './Classes/Raycaster';
 import { useControls } from 'leva'

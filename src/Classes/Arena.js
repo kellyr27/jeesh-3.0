@@ -23,6 +23,7 @@ const checkIfEdge = (a, b) => {
     }
 }
 
+
 class CubeNode {
     constructor(coord) {
         this.coord = coord

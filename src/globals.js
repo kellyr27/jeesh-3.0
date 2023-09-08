@@ -40,3 +40,51 @@ export function checkIfInArena(coord) {
     }
     return true
 }
+
+function arrayEquals (a, b) {
+    return Array.isArray(a) &&
+        Array.isArray(b) &&
+        a.length === b.length &&
+        a.every((val, index) => val === b[index]);
+}
+
+export function equalCoords(a, b) {
+    return arrayEquals(a, b)
+}
+
+export function equalPositions(a, b) {
+    return arrayEquals(a, b)
+}
+
+export function positionInArray(checkPosition, positionsList) {
+    for (const position of positionsList) {
+        if (equalPositions(position, checkPosition)) {
+            return true
+        }
+    }
+    return false
+}
+
+export function removeDuplicatesPositions (positionsList) {
+    const tempPositions = []
+
+    for (const position of positionsList) {
+        if (!positionInArray(position, tempPositions)) {
+            tempPositions.push(position)
+        }
+    }
+
+    return tempPositions
+}
+
+export function findIntersectionPositions(positionsList1, positionList2) {
+    const tempPositions = []
+
+    for (const position1 of positionsList1) {
+        if (positionInArray(position1, positionList2)) {
+            tempPositions.push(position1)
+        }
+    }
+
+    return tempPositions
+}
