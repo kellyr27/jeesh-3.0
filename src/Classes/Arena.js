@@ -113,6 +113,10 @@ class ArenaGraph {
     getEdges() {
         return this.adjList.flat()
     }
+
+    getNodes() {
+        return this.nodes
+    }
 }
 
 const arenaGraph = new ArenaGraph()

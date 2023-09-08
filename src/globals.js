@@ -12,6 +12,12 @@ export function centreCoord(coord) {
     return [x + offset, y + offset, z + offset]
 }
 
+export function centreCoords(coords) {
+    return coords.map((coord) => {
+        return centreCoord(coord)
+    })
+}
+
 /**
  * Checks if a number is inbetween two values [low, high)
  */
