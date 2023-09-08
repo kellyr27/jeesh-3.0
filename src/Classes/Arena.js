@@ -117,6 +117,16 @@ class ArenaGraph {
     getNodes() {
         return this.nodes
     }
+
+    getNodesInArena() {
+        return this.nodes.filter((node) => {
+            if (checkIfInArena(node.getCoord())) {
+                return true
+            } else {
+                return false
+            }
+        })
+    }
 }
 
 const arenaGraph = new ArenaGraph()

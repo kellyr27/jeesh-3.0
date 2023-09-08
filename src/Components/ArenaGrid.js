@@ -24,7 +24,7 @@ export default function ArenaGrid() {
                     </>
                 )
             })}
-            {arenaGraph.getNodes().map((el, index) => {
+            {arenaGraph.getNodesInArena().map((el, index) => {
                 const a = randColor()
                 console.log(el)
                 return (
