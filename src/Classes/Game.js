@@ -1,4 +1,4 @@
-import { equalCoords, equalPositions, ARENA_SPECS, checkIfInArena } from "../globals"
+import { equalCoords, equalPositions, ARENA_SPECS, checkIfInArena, findIntersectionPositions } from "../globals"
 
 /**
  * Get all Attacked Cubes
@@ -62,5 +62,5 @@ const getArmyAttackedCoords = (positions) => {
 }
 
 const getSharedAttackedCoords = (army1AttackedCoords, army2AttackedCoords) => {
-
+    return findIntersectionPositions(army1AttackedCoords, army2AttackedCoords)
 }

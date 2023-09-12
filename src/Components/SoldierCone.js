@@ -1,51 +1,28 @@
 import { centreCoord } from "../globals"
-import { useState, useRef, useEffect } from "react"
+import { useRef } from "react"
+import { arrayEquals } from "../globals"
+
+const directionToRotation = (direction) => {
+    if (arrayEquals(direction, [0,0,1])) {
+        return [- Math.PI / 2, 0, 0]
+    } else if (arrayEquals(direction, [0,0,-1])) {
+        return [Math.PI / 2,0,0]
+    } else if (arrayEquals(direction, [0,1,0])) {
+        return [Math.PI,0,0]
+    } else if (arrayEquals(direction, [0,-1,0])) {
+        return [0,0,0]
+    } else if (arrayEquals(direction, [1,0,0])) {
+        return [0,0,Math.PI / 2]
+    } else if (arrayEquals(direction, [-1,0,0])) {
+        return [0,0,-Math.PI / 2]
+    }
+}
 
 export default function SoldierCone({initialPosition, soldierId, colorScheme}) {
     
     const ref = useRef()
     const {colorNormal, colorHovered, colorSelected} = colorScheme
-    const [initialCoord, initialDirection] = initialPosition
-    const [isSelected, setIsSelected] = useState(false)
-    const [isHovered, setIsHovered] = useState(false)
-
-    // const updateColor = () => {
-    //     if (isSelected) {
-    //         ref.current.material.color.set('green')
-    //     } else {
-    //         if (isHovered) {
-    //             ref.current.material.color.set('purple')
-    //         } else {
-    //             ref.current.material.color.set('red')
-    //         }
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     updateColor()
-    // }, [isSelected, isHovered])
-
-
-    // const onClickHandler = (e) => {
-    //     setIsSelected(!isSelected)
-    //     e.stopPropagation()
-    // }
-
-    // const onPointerOverHandler = (e) => {
-    //     setIsHovered(true)
-    //     e.stopPropagation()
-    // }
-
-    // const onPointerOut = (e) => {
-    //     setIsHovered(false)
-    //     e.stopPropagation()
-    // }
-
-    // const onContextMenu = (e) => {
-    //     setIsSelected(false)
-    //     e.stopPropagation()
-    // }
-
+    const [initialCoord, initialDir] = initialPosition
 
     return (
         <>
@@ -53,11 +30,7 @@ export default function SoldierCone({initialPosition, soldierId, colorScheme}) {
                 ref={ref}
                 soldierId={soldierId}
                 position={centreCoord(initialCoord)}
-                rotation={[0, 0, 0]}
-                // onClick={onClickHandler}
-                // onContextMenu={onContextMenu}
-                // onPointerOver={onPointerOverHandler}
-                // onPointerOut={onPointerOut}
+                rotation={directionToRotation(initialDir)}
 
             >
                 <coneGeometry args={[0.4, 0.8]}/>
