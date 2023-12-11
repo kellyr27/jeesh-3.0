@@ -11,7 +11,7 @@ export default function ArenaGrid() {
 
     return (
         <>
-            {/* {arenaGraph.getEdges().map((el, index) => {
+            {arenaGraph.getEdges().map((el, index) => {
                 const a = randColor()
 
                 return (
@@ -38,7 +38,7 @@ export default function ArenaGrid() {
                         />
                     </>
                 )
-            })} */}
+            })}
         </>
     )
 }

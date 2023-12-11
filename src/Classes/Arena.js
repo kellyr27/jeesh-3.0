@@ -27,17 +27,95 @@ const checkIfEdge = (a, b) => {
 class CubeNode {
     constructor(coord) {
         this.coord = coord
+        this.types = new Set()
     }
 
     getCoord() {
         return this.coord
     }
+
+    setType (num) {
+        this.types.add(num)
+    }
+
+    removeType (num) {
+        this.types.delete(num)
+    }
+
+    setTypeEdgeBorder() {
+        this.types.setType(1)
+    }
+
+    removeTypeEdgeBorder() {
+        this.types.removeType(1)
+    }
+
+    setTypeBorder() {
+        this.types.setType(2)
+    }
+
+    removeTypeBorder() {
+        this.types.removeType(2)
+    }
+
+    setTypeMajor() {
+        this.types.setType(3)
+    }
+
+    removeTypeMajor() {
+        this.types.removeType(3)
+    }
+
+    setTypeAttackZoneArmy1() {
+        this.types.setType(4)
+    }
+
+    removeTypeAttackZoneArmy1() {
+        this.types.removeType(4)
+    }
+
+    setTypeAttackZoneArmy2() {
+        this.types.setType(5)
+    }
+
+    removeTypeAttackZoneArmy2() {
+        this.types.removeType(5)
+    }
+
+    setTypeAttackZoneShared() {
+        this.types.setType(6)
+    }
+
+    removeTypeAttackZoneShared() {
+        this.types.removeType(6)
+    }
+
+    setTypeDoor() {
+        this.types.setType(7)
+    }
+
+    removeTypeDoor() {
+        this.types.removeType(7)
+    }
+
+    setTypeHovered() {
+        this.types.setType(8)
+    }
+
+    removeTypeHovered() {
+        this.types.removeType(8)
+    }
 }
 
+// const lineColorScheme = {
+//     0: 
+// }
+
 class LineEdge {
+
     constructor(coord1, coord2) {
         this.createLine(coord1, coord2)
-        this.priorities = [0]
+        this.priorities = new Set()
     }
 
     createLine (coord1, coord2) {
@@ -54,23 +132,29 @@ class LineEdge {
                 [node1X - ARENA_SPECS.CUBE_LENGTH / 2,avgY,avgZ], 
                 [node1X + ARENA_SPECS.CUBE_LENGTH / 2,avgY,avgZ]
             ]
-            this.color = 'white'
-            this.lineWidth = 0.8
         } else if (node1Y === node2Y) {
             this.points = [
                 [avgX,node1Y - ARENA_SPECS.CUBE_LENGTH / 2,avgZ],
                 [avgX,node1Y + ARENA_SPECS.CUBE_LENGTH / 2,avgZ]
             ]
-            this.color = 'white'
-            this.lineWidth = 0.8
         } else if (node1Z === node2Z) {
             this.points= [
                 [avgX,avgY,node1Z - ARENA_SPECS.CUBE_LENGTH / 2],
                 [avgX,avgY,node1Z + ARENA_SPECS.CUBE_LENGTH / 2]
             ]
-            this.color = 'white'
-            this.lineWidth = 0.8
         }
+    }
+
+    setPriority (num) {
+        this.priorities.add(num)
+    }
+
+    removePriority (num) {
+        this.priorities.delete(num)
+    }
+
+    getHighestPriority () {
+        return Math.max(...this.priorities)
     }
 }
 
@@ -83,6 +167,7 @@ class ArenaGraph {
         this.createEdges()
     }
 
+    // Creates a Node for each Cube in the Arena
     createNodes () {
         for (let i = -1; i < ARENA_SPECS.ARENA_LENGTH + 1; i++) {
             for (let j = -1; j < ARENA_SPECS.ARENA_LENGTH + 1; j++) {
@@ -93,6 +178,7 @@ class ArenaGraph {
         }
     }
 
+    // Creates an Empty Adjacency List
     createEmptyAdjList () {
         const numOfNodes = this.nodes.length
         this.adjList = Array(numOfNodes).fill().map(()=> {
@@ -100,6 +186,7 @@ class ArenaGraph {
         })
     }
 
+    // Creates an Edge between two Nodes if they are adjacent, adds it to the Adjacency List
     createEdges () {
         for (let i = 0; i < this.nodes.length - 1; i++) {
             for (let j = i+1; j < this.nodes.length; j++) {
@@ -111,14 +198,17 @@ class ArenaGraph {
         }
     }
 
+    // Returns a list of Edges from the Adjacency List
     getEdges() {
         return this.adjList.flat()
     }
 
+    // TODO
     getNodes() {
         return this.nodes
     }
 
+    // Returns a list of all Nodes (Cubes) in the Arena
     getNodesInArena() {
         return this.nodes.filter((node) => {
             if (checkIfInArena(node.getCoord())) {
