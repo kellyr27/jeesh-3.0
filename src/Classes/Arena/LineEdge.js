@@ -1,4 +1,4 @@
-import { ARENA_SPECS } from "../../globals"
+import { ARENA_SPECS, equalCoords } from "../../globals"
 import CubeNode from "./CubeNode"
 
 export default class LineEdge {
@@ -87,5 +87,29 @@ export default class LineEdge {
 
     getType() {
         return Math.max(...this.types)
+    }
+
+    checkIfEdgeIsArenaBorder () {
+        // Edge cases - Find Edges that are connected to Outer Border Edges connected to Inner Border Edges
+        if ((this.node1.hasType_OuterBorderEdge() && this.node2.hasType_InnerBorder()) || (this.node1.hasType_InnerBorder() && this.node2.hasType_OuterBorderEdge())) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    static sharedEdge (edge1, edge2) {
+        const edge1Points = edge1.getPoints()
+        const edge2Points = edge2.getPoints()
+
+        if (equalCoords(edge1Points[0], edge2Points[0]) && equalCoords(edge1Points[1], edge2Points[1])) {
+            return true
+        } else if (equalCoords(edge1Points[0], edge2Points[1]) && equalCoords(edge1Points[1], edge2Points[0])) {
+            return true
+        } else if (edge1.checkIfEdgeIsArenaBorder()) {
+            return true
+        } else {
+            return false
+        }
     }
 }

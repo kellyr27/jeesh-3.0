@@ -1,6 +1,7 @@
 import { checkIfInArena, ARENA_SPECS} from "../../globals"
 import CubeNode from "./CubeNode"
 import LineEdge from "./LineEdge"
+import CombinedEdge from "./CombinedEdge"
 
 /**
  * Checks if an Edge exists between two coordinates
@@ -39,6 +40,7 @@ class ArenaGraph {
         this.createNodes()
         this.createEmptyAdjList()
         this.createEdges()
+        this.combinedEdges = this.createCombinedEdges()
     }
 
     // Creates a Node for each Cube in the Arena
@@ -77,6 +79,10 @@ class ArenaGraph {
     // Returns a list of Edges from the Adjacency List
     getEdges() {
         return this.adjList.flat()
+    }
+
+    getCombinedEdges () {
+        return this.combinedEdges
     }
 
     // TODO
@@ -130,6 +136,24 @@ class ArenaGraph {
             node.setType_AttackZoneShared()
             this.updateLineEdgesDisplay()
         })
+    }
+
+    createCombinedEdges () {
+        const edges = this.getEdges()
+        const combinedEdges = []
+
+        for (let i = 0; i < edges.length - 1; i++) {
+            for (let j = i+1; j < edges.length; j++) {
+                if (LineEdge.sharedEdge(edges[i], edges[j])) {
+                    combinedEdges.push(new CombinedEdge(edges[i], edges[j]))
+                    break
+                }
+            }
+        }
+        
+
+        return combinedEdges
+    
     }
 }
 

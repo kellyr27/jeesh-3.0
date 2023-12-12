@@ -56,7 +56,7 @@ const DISPLAY_LINE_TO_COLOR_SCHEME = {
 const LINE_COLOR_SCHEME = {
     'default': {
         color: '#ff00ff',
-        lineWidth: 0.3
+        lineWidth: 5
     },
     'border': {
         color: '#ffffff',
@@ -90,39 +90,40 @@ const LINE_COLOR_SCHEME = {
 
 export default function ArenaGrid() {
 
+    const edges = arenaGraph.getCombinedEdges()
+    const nodes = arenaGraph.getNodesInArena()
+
 
     return (
         <>
-            {arenaGraph.getEdges().map((lineEdge, index) => {
+            {edges.map((lineEdge, index) => {
                 const displayType = lineEdge.getType()
                 const colorScheme = DISPLAY_LINE_TO_COLOR_SCHEME[displayType]
 
                 return (
-                    <>
-                        <Line 
-                            points={centreCoords(lineEdge.getPoints())}
-                            color={LINE_COLOR_SCHEME[colorScheme]['color']}
-                            linewidth={LINE_COLOR_SCHEME[colorScheme]['lineWidth']}
-                        />
-                    </>
+                    <Line
+                        key={index}
+                        points={centreCoords(lineEdge.getPoints())}
+                        color={LINE_COLOR_SCHEME[colorScheme]['color']}
+                        linewidth={LINE_COLOR_SCHEME[colorScheme]['lineWidth']}
+                    />
                 )
             })}
-            {arenaGraph.getNodesInArena().map((node, index) => {
+            {/* {nodes.map((node, index) => {
                 const displayType = node.getDisplayType()
                 const colorScheme = DISPLAY_TYPE_TO_COLOR_SCHEME[displayType]
 
                 return (
-                    <>
-                        <Box 
-                            args={[ARENA_SPECS.CUBE_LENGTH, ARENA_SPECS.CUBE_LENGTH, ARENA_SPECS.CUBE_LENGTH]}
-                            position={centreCoord(node.coord)}
-                            material-color={CUBE_COLOR_SCHEME[colorScheme]['color']}
-                            material-transparent={true}
-                            material-opacity={CUBE_COLOR_SCHEME[colorScheme]['opacity']}
-                        />
-                    </>
+                    <Box 
+                        key={index}
+                        args={[ARENA_SPECS.CUBE_LENGTH, ARENA_SPECS.CUBE_LENGTH, ARENA_SPECS.CUBE_LENGTH]}
+                        position={centreCoord(node.coord)}
+                        material-color={CUBE_COLOR_SCHEME[colorScheme]['color']}
+                        material-transparent={true}
+                        material-opacity={CUBE_COLOR_SCHEME[colorScheme]['opacity']}
+                    />
                 )
-            })}
+            })} */}
         </>
     )
 }

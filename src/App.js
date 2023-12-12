@@ -41,8 +41,8 @@ function App() {
         <TrackballControls makeDefault rotateSpeed='3'/>
         <axesHelper args={[20]}/>
         <ArenaGrid />
-        <StarField starCoords={starCoords}/>
-        <Army colorScheme={{colorNormal, colorHovered, colorSelected}}/>
+        {/* <StarField starCoords={starCoords}/> */}
+        {/* <Army colorScheme={{colorNormal, colorHovered, colorSelected}}/> */}
         {/* <SoldierCone initialPosition={[[5,5,10],[0,0,1]]} soldierId={[0,1]}/>
         <SoldierCone initialPosition={[[4,5,10],[0,0,1]]} soldierId={[0,2]}/> */}
         {/* <QuadraticBezierLine 
