@@ -106,8 +106,6 @@ export default class LineEdge {
             return true
         } else if (equalCoords(edge1Points[0], edge2Points[1]) && equalCoords(edge1Points[1], edge2Points[0])) {
             return true
-        } else if (edge1.checkIfEdgeIsArenaBorder()) {
-            return true
         } else {
             return false
         }

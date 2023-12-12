@@ -7,9 +7,7 @@ import CombinedEdge from "./CombinedEdge"
  * Checks if an Edge exists between two coordinates
  */
 const checkIfEdgeBetweenNodes = (a, b) => {
-    const iDiff = Math.abs(a[0] - b[0])
-    const jDiff = Math.abs(a[1] - b[1])
-    const kDiff = Math.abs(a[2] - b[2])
+    const [iDiff, jDiff, kDiff] = [Math.abs(a[0] - b[0]), Math.abs(a[1] - b[1]), Math.abs(a[2] - b[2])]
 
     if (!checkIfInArena(a) && !checkIfInArena(b)) {
         return false
@@ -36,9 +34,9 @@ const createCoordKey = (coord) => {
 class ArenaGraph {
     constructor () {
         this.nodesMap = new Map()
-        this.nodes = []  // TODO: Remove redundant variable and use nodesMap
         this.createNodes()
-        this.createEmptyAdjList()
+        this.createEmptyAdjList()   // MAY BE REDUNDANT
+        this.edges = new Set()
         this.createEdges()
         this.combinedEdges = this.createCombinedEdges()
     }
@@ -50,7 +48,6 @@ class ArenaGraph {
                 for (let k = -1; k < ARENA_SPECS.ARENA_LENGTH + 1; k++) {
                     const node = new CubeNode([i,j,k])
                     this.nodesMap.set(createCoordKey([i,j,k]), node)
-                    this.nodes.push(node)
                 }
             }
         }
@@ -64,13 +61,21 @@ class ArenaGraph {
         })
     }
 
-    // Creates an Edge between two Nodes if they are adjacent, adds it to the Adjacency List
+    // Creates an Edge between two Nodes if they are adjacent, adds it to the Adjacency List - TODO: Fix this.nodes
     createEdges () {
-        for (let i = 0; i < this.nodes.length - 1; i++) {
-            for (let j = i+1; j < this.nodes.length; j++) {
-                if (checkIfEdgeBetweenNodes(this.nodes[i].getCoord(), this.nodes[j].getCoord())) {
-                    const edge = new LineEdge(this.nodes[i], this.nodes[j])
+
+        const nodes = Array.from(this.nodesMap.values());
+
+        for (let i = 0; i < nodes.length - 1; i++) {
+            for (let j = i+1; j < nodes.length; j++) {
+
+                const node1 = nodes[i]
+                const node2 = nodes[j]
+
+                if (checkIfEdgeBetweenNodes(node1.getCoord(), node2.getCoord())) {
+                    const edge = new LineEdge(node1, node2)
                     this.adjList[i].push(edge)
+                    this.edges.add(edge)
                 }
             }
         }
@@ -78,7 +83,7 @@ class ArenaGraph {
 
     // Returns a list of Edges from the Adjacency List
     getEdges() {
-        return this.adjList.flat()
+        return Array.from(this.edges)
     }
 
     getCombinedEdges () {
@@ -87,12 +92,12 @@ class ArenaGraph {
 
     // TODO
     getNodes() {
-        return this.nodes
+        return Array.from(this.nodesMap.values())
     }
 
     // Returns a list of all Nodes (Cubes) in the Arena
     getNodesInArena() {
-        return this.nodes.filter((node) => {
+        return this.getNodes().filter((node) => {
             if (checkIfInArena(node.getCoord())) {
                 return true
             } else {
@@ -144,10 +149,17 @@ class ArenaGraph {
 
         for (let i = 0; i < edges.length - 1; i++) {
             for (let j = i+1; j < edges.length; j++) {
+
                 if (LineEdge.sharedEdge(edges[i], edges[j])) {
                     combinedEdges.push(new CombinedEdge(edges[i], edges[j]))
                     break
-                }
+                } 
+            }
+        }
+
+        for (let i = 0; i < edges.length; i++) {
+            if (edges[i].checkIfEdgeIsArenaBorder()) {
+                combinedEdges.push(new CombinedEdge(edges[i], null))
             }
         }
         
