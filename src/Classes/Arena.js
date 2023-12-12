@@ -23,11 +23,88 @@ const checkIfEdge = (a, b) => {
     }
 }
 
+// Checks if a Coord is an Edge Border
+const checkIfCoordisEdgeBorder = (coord) => {
+    const isOutsideArenaCoord = coord.map((el) => {
+        if (el < 0 || el >= ARENA_SPECS.ARENA_LENGTH) {
+            return true
+        } else {
+            return false
+        }
+    })
+
+    let trueCount = isOutsideArenaCoord.filter((el) => {
+        return el === true
+    })
+
+    if (trueCount.length > 1) {
+        return true
+    }
+    else {
+        return false
+    }
+}
+
+// Checks if two Arrays are equal
+function arraysAreEqual(array1, array2) {
+    if (array1.length !== array2.length) {
+      return false
+    }
+  
+    for (let i = 0; i < array1.length; i++) {
+      if (array1[i] !== array2[i]) {
+        return false
+      }
+    }
+  
+    return true
+  }
+
+// Checks if a Coord is a Door
+const checkIfCoordisDoor = (coord) => {
+    if (arraysAreEqual(coord, [5,5,0]) || arraysAreEqual(coord, [5,5,10])) {
+        return true
+    } else {
+        return false
+    }
+}
+
 
 class CubeNode {
+    /**
+     * DISPLAY TYPES
+     * 0: Default
+     * 1: Army 1 Attack Zone
+     * 2: Army 2 Attack Zone
+     * 3: Army 1 and 2 Attack Zone (Shared)
+     * 4: Door
+     * 
+     * FIXED TYPES
+     * 1: Edge Border Cubes
+     * 2: Border Cube
+     * 3: Major Grid Cubes
+     */
+
     constructor(coord) {
         this.coord = coord
         this.types = new Set()
+    }
+
+    checkIfFixedTypes() {
+        if (!checkIfInArena(this.coord)) {
+            this.setTypeBorder()
+
+            // Check if Edge Border
+            if (checkIfCoordisEdgeBorder(this.coord)) {
+                this.setTypeEdgeBorder()
+            }
+        }
+
+        if (checkIfCoordisDoor(this.coord)) {
+            this.setTypeDoor()
+        }
+
+        //TODO: Check if Major
     }
 
     getCoord() {
@@ -105,6 +182,17 @@ class CubeNode {
     removeTypeHovered() {
         this.types.removeType(8)
     }
+
+    removeVariableTypes() {
+        this.types.removeTypeHovered()
+        this.types.removeTypeAttackZoneArmy1()
+        this.types.removeTypeAttackZoneArmy2()
+        this.types.removeTypeAttackZoneShared()        
+    }
+
+    getDisplayType() {
+
+    }
 }
 
 // const lineColorScheme = {
@@ -161,6 +249,7 @@ class LineEdge {
 
 class ArenaGraph {
     constructor () {
+        this.nodesMap = new Map()
         this.nodes = []
         this.createNodes()
         this.createEmptyAdjList()
@@ -172,7 +261,9 @@ class ArenaGraph {
         for (let i = -1; i < ARENA_SPECS.ARENA_LENGTH + 1; i++) {
             for (let j = -1; j < ARENA_SPECS.ARENA_LENGTH + 1; j++) {
                 for (let k = -1; k < ARENA_SPECS.ARENA_LENGTH + 1; k++) {
-                    this.nodes.push(new CubeNode([i,j,k]))
+                    const node = new CubeNode([i,j,k])
+                    this.nodesMap.set([i,j,k], node)
+                    this.nodes.push(node)
                 }
             }
         }
@@ -216,6 +307,34 @@ class ArenaGraph {
             } else {
                 return false
             }
+        })
+    }
+
+    removeCubeVariableTypes(coords) {
+        coords.forEach((coord) => {
+            const node = this.nodesMap.get(coord)
+            node.removeVariableTypes()
+        })
+    }
+
+    setCubesAttackZoneArmy1(coords) {
+        coords.forEach((coord) => {
+            const node = this.nodesMap.get(coord)
+            node.setTypeAttackZoneArmy1()
+        })
+    }
+
+    setCubesAttackZoneArmy2(coords) {
+        coords.forEach((coord) => {
+            const node = this.nodesMap.get(coord)
+            node.setTypeAttackZoneArmy2()
+        })
+    }
+
+    setCubesAttackZoneShared(coords) {
+        coords.forEach((coord) => {
+            const node = this.nodesMap.get(coord)
+            node.setTypeAttackZoneShared()
         })
     }
 }

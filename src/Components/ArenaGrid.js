@@ -6,6 +6,21 @@ const randColor = () =>  {
     return "#" + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0').toUpperCase();
 }
 
+const CubeTypes = {
+    'attackZoneArmy1': {
+        color: '#ff0000',
+        opacity: 0.05
+    },
+    'attackZoneArmy2': {
+        color: '#0000ff',
+        opacity: 0.05
+    },
+    'attackZoneShared': {
+        color: '#800080',
+        opacity: 0.05
+    },
+}
+
 export default function ArenaGrid() {
 
 
@@ -32,7 +47,7 @@ export default function ArenaGrid() {
                         <Box 
                             args={[ARENA_SPECS.CUBE_LENGTH, ARENA_SPECS.CUBE_LENGTH, ARENA_SPECS.CUBE_LENGTH]}
                             position={centreCoord(el.coord)}
-                            material-color={a}
+                            material-color={'#ff0000'}
                             material-transparent={true}
                             material-opacity={0.05}
                         />
