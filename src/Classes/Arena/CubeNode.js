@@ -74,19 +74,19 @@ const checkIfEdgeBetweenCuboids = (cuboidCenterCoord1, cuboidCenterCoord2) => {
     }
 }
 
-
+// Get all the Cuboid Center Coords (including outside the Arena)
 const getCuboidCenterCoords = () => {
-    const majorCubeCentres = []
+    const cuboidCenters = []
 
     for (let i = -1; i <= ARENA_SPECS.ARENA_LENGTH + 1; i += 3) {
         for (let j = -1; j <= ARENA_SPECS.ARENA_LENGTH + 1; j += 3) {
             for (let k = -1; k <= ARENA_SPECS.ARENA_LENGTH + 1; k += 3) {
-                majorCubeCentres.push([i,j,k])
+                cuboidCenters.push([i,j,k])
             }
         }
     }
 
-    return majorCubeCentres
+    return cuboidCenters
 }
 const MAJOR_CUBE_CENTER_COORDS = getCuboidCenterCoords()
 
@@ -101,10 +101,9 @@ export default class CubeNode {
      * 5: Hovered
      * 
      * FIXED TYPES - Used to get Line Types
-     * 1: Edge Border Cubes
-     * 2: Border Cube
-     * 3: Major Grid Edge Cubes - TODO: REDUNDANT
-     * 4: Inner Border Cubes
+     * 1: Outer Border Edge Cubes
+     * 2: Outer Border Cubes
+     * 3: Inner Border Cubes
      */
 
     constructor(coord) {
@@ -116,7 +115,7 @@ export default class CubeNode {
 
     setFixedTypes() {
         if (!checkIfInArena(this.coord)) {
-            this.setTypeBorder()
+            this.setType_OuterBorder()
 
             // Check if Edge Border
             if (checkIfCoordIsOuterBorderEdge(this.coord)) {
@@ -129,7 +128,7 @@ export default class CubeNode {
         }
 
         if (checkIfCoordIsInnerBorder(this.coord)) {
-            this.setTypeInnerBorder()
+            this.setType_InnerBorder()
         }
     }
 
@@ -153,63 +152,69 @@ export default class CubeNode {
         this.displayTypes.delete(num)
     }
 
+    /**
+     * Set and remove Fixed Types
+     */
     setType_OuterBorderEdge() {
         this.setFixedType(1)
     }
 
-    removeTypeEdgeBorder() {
+    removeType_OuterBorderEdge() {
         this.removeFixedType(1)
     }
 
-    setTypeBorder() {
+    hasType_OuterBorderEdge() {
+        return this.fixedTypes.has(1)
+    }
+
+    setType_OuterBorder() {
         this.setFixedType(2)
     }
 
-    removeTypeBorder() {
+    removeType_OuterBorder() {
         this.removeFixedType(2)
     }
 
-    setTypeMajor() {
+    hasType_OuterBorder() {
+        return this.fixedTypes.has(2)
+    }
+
+    setType_InnerBorder() {
         this.setFixedType(3)
     }
 
-    removeTypeMajor() {
+    removeType_InnerBorder() {
         this.removeFixedType(3)
     }
 
-    setTypeInnerBorder() {
-        this.setFixedType(4)
+    hasType_InnerBorder() {
+        return this.fixedTypes.has(3)
     }
 
-    isInnerBorder() {
-        return this.fixedTypes.has(4)
-    }
-
-    removeTypeInnerBorder() {
-        this.removeFixedType(4)
-    }
-
-    setTypeAttackZoneArmy1() {
+    /**
+     * Set and remove Display Types
+     */
+    setType_AttackZoneArmy1() {
         this.setDisplayType(1)
     }
 
-    removeTypeAttackZoneArmy1() {
+    removeType_AttackZoneArmy1() {
         this.removeDisplayType(1)
     }
 
-    setTypeAttackZoneArmy2() {
+    setType_AttackZoneArmy2() {
         this.setDisplayType(2)
     }
 
-    removeTypeAttackZoneArmy2() {
+    removeType_AttackZoneArmy2() {
         this.removeDisplayType(2)
     }
 
-    setTypeAttackZoneShared() {
+    setType_AttackZoneShared() {
         this.setDisplayType(3)
     }
 
-    removeTypeAttackZoneShared() {
+    removeType_AttackZoneShared() {
         this.removeDisplayType(3)
     }
 
@@ -217,15 +222,19 @@ export default class CubeNode {
         this.setDisplayType(4)
     }
 
-    removeTypeDoor() {
+    removeType_Door() {
         this.removeDisplayType(4)
     }
 
-    setTypeHovered() {
+    hasType_Door() {
+        return this.displayTypes.has(4)
+    }
+
+    setType_Hovered() {
         this.setDisplayType(5)
     }
 
-    removeTypeHovered() {
+    removeType_Hovered() {
         this.removeDisplayType(5)
     }
 
@@ -239,18 +248,18 @@ export default class CubeNode {
     }
 
     // A Border Line is between a Edge Border Cube and a Non Border Cube
-    static isBorderLineBetweenNodes(node1, node2) {
-        if (node1.fixedTypes.has(1) && !node2.fixedTypes.has(2)) {
+    static isBorderEdgeBetweenNodes(node1, node2) {
+        if (node1.hasType_OuterBorderEdge() && !node2.hasType_OuterBorder()) {
             return true
-        } else if (!node1.fixedTypes.has(2) && node2.fixedTypes.has(1)) {
+        } else if (!node1.hasType_OuterBorder() && node2.hasType_OuterBorderEdge()) {
             return true
         } else {
             return false
         }
     }
 
-    // TODO: Implement Major Lines
-    static isMajorLineBetweenNodes(node1, node2) {
+    // A Cuboid Line is between two Cuboid Edge Cubes
+    static isCuboidEdgeBetweenNodes(node1, node2) {
 
         const cubeCenter1 = MAJOR_CUBE_CENTER_COORDS.filter((center) => {
             if (isCoordinateOnCuboidEdge(node1.getCoord(), center)) {
@@ -267,23 +276,22 @@ export default class CubeNode {
             }
         })
 
-        // Lines on Inner border or further out
         if (cubeCenter1.length === 0 || cubeCenter2.length === 0) {
             return false
         } else if (cubeCenter1.length > 2 || cubeCenter2.length > 2) {
             console.error("ERROR: More than 2 Cube Centres")
         } else if (!checkIfEdgeBetweenCuboids(cubeCenter1[0], cubeCenter2[0])) {
             return false
-        } else if (node1.isInnerBorder() && node2.isInnerBorder()) {
-            return false  
+        } else if (node1.hasType_InnerBorder() && node2.hasType_InnerBorder()) {
+            return false
         } else {
             return true
         }
     }
 
-    // Check whether the Line Surrounds a Door
-    static isDoorLineBetweenNodes(node1, node2) {
-        if (node1.displayTypes.has(4) || node2.displayTypes.has(4)) {
+    // A Door Line is connected to a Door coordinate
+    static isDoorEdgeBetweenNodes(node1, node2) {
+        if (node1.hasType_Door() || node2.hasType_Door()) {
             return true
         } else {
             return false

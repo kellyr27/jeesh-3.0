@@ -374,7 +374,7 @@ class LineEdge {
      * TYPES
      * 0: Default
      * 1: Border Line
-     * 2: Major Grid Line
+     * 2: Cuboid Lines
      * 3: Army 1 Attack Zone
      * 4: Army 2 Attack Zone
      * 5: Army 1 and 2 Attack Zone (Shared)

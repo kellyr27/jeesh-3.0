@@ -1,6 +1,6 @@
 import { Line, Box } from '@react-three/drei';
 import { ARENA_SPECS, centreCoord, centreCoords } from '../globals';
-import arenaGraph from '../Classes/Arena';
+import arenaGraph from '../Classes/Arena/Arena';
 
 const randColor = () =>  {
     return "#" + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0').toUpperCase();
