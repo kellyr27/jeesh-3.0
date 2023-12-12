@@ -1,4 +1,4 @@
-import { checkIfInArena, ARENA_SPECS, equalCoords } from "../globals"
+import { checkIfInArena, ARENA_SPECS } from "../globals"
 
 /**
  * Checks if an Edge exists between two coordinates
@@ -76,14 +76,6 @@ const checkIfCoordIsInnerBorder = (coord) => {
     } else {
         return false
     }
-}
-
-// Calculate the Manhattan Distance between two 3D Coordinates
-const calculateManhattanDistance = (coord1, coord2) => {
-    const [x1,y1,z1] = coord1
-    const [x2,y2,z2] = coord2
-
-    return Math.abs(x1 - x2) + Math.abs(y1 - y2) + Math.abs(z1 - z2)
 }
 
 const isCoordinateOnCubeEdge = (coord, cubeCenterCoord) => {
