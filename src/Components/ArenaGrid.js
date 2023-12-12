@@ -64,7 +64,7 @@ const LINE_COLOR_SCHEME = {
     },
     'majorGrid': {
         color: '#ffffff',
-        lineWidth: 0.1
+        lineWidth: 4
     },
     'attackZoneArmy1': {
         color: '#ff0000',
@@ -96,7 +96,6 @@ export default function ArenaGrid() {
             {arenaGraph.getEdges().map((lineEdge, index) => {
                 const displayType = lineEdge.getType()
                 const colorScheme = DISPLAY_LINE_TO_COLOR_SCHEME[displayType]
-                
                 return (
                     <>
                         <Line 

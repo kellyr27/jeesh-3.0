@@ -1,4 +1,4 @@
-import { checkIfInArena, ARENA_SPECS, positionInArray } from "../globals"
+import { checkIfInArena, ARENA_SPECS, equalCoords } from "../globals"
 
 /**
  * Checks if an Edge exists between two coordinates
@@ -71,7 +71,43 @@ const checkIfCoordisDoor = (coord) => {
 
 // Check if a Coord in on the Inner Border Edge
 const checkIfCoordIsInnerBorder = (coord) => {
-    if (coord.contains(0) || coord.contains(ARENA_SPECS.ARENA_LENGTH - 1)) {
+    if (coord.includes(0) || coord.includes(ARENA_SPECS.ARENA_LENGTH - 1)) {
+        return true
+    } else {
+        return false
+    }
+}
+
+// Calculate the Manhattan Distance between two 3D Coordinates
+const calculateManhattanDistance = (coord1, coord2) => {
+    const [x1,y1,z1] = coord1
+    const [x2,y2,z2] = coord2
+
+    return Math.abs(x1 - x2) + Math.abs(y1 - y2) + Math.abs(z1 - z2)
+}
+
+const isCoordinateOnCubeEdge = (coord, cubeCenterCoord) => {
+    const iDiff = Math.abs(coord[0] - cubeCenterCoord[0])
+    const jDiff = Math.abs(coord[1] - cubeCenterCoord[1])
+    const kDiff = Math.abs(coord[2] - cubeCenterCoord[2])
+
+    if ((iDiff === 1) && (jDiff === 1) && ((kDiff === 0) || (kDiff === 1))) {
+        return true
+    } else if ((iDiff === 1) && ((jDiff === 0) || (jDiff === 1)) && (kDiff === 1)) {
+        return true
+    } else if (((iDiff === 0) || (iDiff === 1)) && (jDiff === 1) && (kDiff === 1)) {
+        return true
+    } else {
+        return false
+    }
+}
+
+const isCoordinateInsideCube = (coord, cubeCenterCoord) => {
+    const iDiff = Math.abs(coord[0] - cubeCenterCoord[0])
+    const jDiff = Math.abs(coord[1] - cubeCenterCoord[1])
+    const kDiff = Math.abs(coord[2] - cubeCenterCoord[2])
+
+    if ((iDiff <= 1) && (jDiff <= 1) && (kDiff <= 1)) {
         return true
     } else {
         return false
@@ -81,9 +117,9 @@ const checkIfCoordIsInnerBorder = (coord) => {
 const getMajorCubeCentres = () => {
     const majorCubeCentres = []
 
-    for (let i = 2; i < ARENA_SPECS.ARENA_LENGTH; i += 3) {
-        for (let j = 2; j < ARENA_SPECS.ARENA_LENGTH; j += 3) {
-            for (let k = 2; k < ARENA_SPECS.ARENA_LENGTH; k += 3) {
+    for (let i = -1; i <= ARENA_SPECS.ARENA_LENGTH + 1; i += 3) {
+        for (let j = -1; j <= ARENA_SPECS.ARENA_LENGTH + 1; j += 3) {
+            for (let k = -1; k <= ARENA_SPECS.ARENA_LENGTH + 1; k += 3) {
                 majorCubeCentres.push([i,j,k])
             }
         }
@@ -92,16 +128,41 @@ const getMajorCubeCentres = () => {
     return majorCubeCentres
 }
 
+const checkIfMajorLineBetweenCubes = (cubeCenterCoord1, cubeCenterCoord2) => {
+    const iDiff = Math.abs(cubeCenterCoord1[0] - cubeCenterCoord2[0])
+    const jDiff = Math.abs(cubeCenterCoord1[1] - cubeCenterCoord2[1])
+    const kDiff = Math.abs(cubeCenterCoord1[2] - cubeCenterCoord2[2])
+
+    if ((iDiff === 3) && (jDiff === 3) && (kDiff === 0)) {
+        return true
+    } else if ((iDiff === 3) && (jDiff === 0) && (kDiff === 3)) {
+        return true
+    } else if ((iDiff === 0) && (jDiff === 3) && (kDiff === 3)) {
+        return true
+    } else {
+        return false
+    }
+}
+
 const MAJOR_CUBE_CENTRES = getMajorCubeCentres()
 
 const checkIfCoordIsMajorGridEdge = (coord) => {
-    if (checkIfCoordIsInnerBorder(coord) && checkIfInArena(coord)) {
-        return false
-    } else if (positionInArray(coord, MAJOR_CUBE_CENTRES)) {
-        return false
-    } else {
-        return true
-    }
+    // if (checkIfCoordIsInnerBorder(coord) && checkIfInArena(coord)) {
+    //     return false
+    // } else if (positionInArray(coord, MAJOR_CUBE_CENTRES)) {
+    //     return false
+    // } else {
+    //     return true
+    // }
+
+    // //TODO: Redo
+    // const minimumDistanceFromCentre = MAJOR_CUBE_CENTRES.map((centre) => {
+    //     return calculateManhattanDistance(coord, centre)
+    // }).reduce((a,b) => {
+    //     return Math.min(a,b)
+    // })
+
+    return false
 }
 
 class CubeNode {
@@ -117,7 +178,7 @@ class CubeNode {
      * FIXED TYPES - Used to get Line Types
      * 1: Edge Border Cubes
      * 2: Border Cube
-     * 3: Major Grid Edge Cubes
+     * 3: Major Grid Edge Cubes - MAY BE REDUNDANT
      * 4: Inner Border Cubes
      */
 
@@ -199,6 +260,10 @@ class CubeNode {
         this.setFixedType(4)
     }
 
+    isInnerBorder() {
+        return this.fixedTypes.has(4)
+    }
+
     removeTypeInnerBorder() {
         this.removeFixedType(4)
     }
@@ -265,16 +330,44 @@ class CubeNode {
 
     // TODO: Implement Major Lines
     static isMajorLineBetweenNodes(node1, node2) {
-        if (node1.fixedTypes.has(3) && node2.fixedTypes.has(3)) {
-            return true
-        } else {
+        // if (node1.fixedTypes.has(3) && node2.fixedTypes.has(3)) {
+        //     return true
+        // } else {
+        //     return false
+        // }
+
+        const cubeCentre = MAJOR_CUBE_CENTRES.filter((centre) => {
+            if (isCoordinateOnCubeEdge(node1.getCoord(), centre)) {
+                return true
+            } else {
+                return false
+            }
+        })
+        const cubeCentre2 = MAJOR_CUBE_CENTRES.filter((centre) => {
+            if (isCoordinateOnCubeEdge(node2.getCoord(), centre)) {
+                return true
+            } else {
+                return false
+            }
+        })
+
+        // Lines on Inner border or further out
+        if (cubeCentre.length === 0 || cubeCentre2.length === 0) {
             return false
+        } else if (cubeCentre.length > 2 || cubeCentre2.length > 2) {
+            console.error("ERROR: More than 2 Cube Centres")
+        } else if (!checkIfMajorLineBetweenCubes(cubeCentre[0], cubeCentre2[0])) {
+            return false
+        } else if (node1.isInnerBorder() && node2.isInnerBorder()) {
+            return false  
+        } else {
+            return true
         }
     }
 
     // Check whether the Line Surrounds a Door
     static isDoorLineBetweenNodes(node1, node2) {
-        if (node1.fixedTypes.has(4) || node2.fixedTypes.has(4)) {
+        if (node1.displayTypes.has(4) || node2.displayTypes.has(4)) {
             return true
         } else {
             return false
