@@ -72,14 +72,15 @@ const checkIfCoordisDoor = (coord) => {
 
 class CubeNode {
     /**
-     * DISPLAY TYPES
+     * DISPLAY TYPES (order of Display priority)
      * 0: Default
      * 1: Army 1 Attack Zone
      * 2: Army 2 Attack Zone
      * 3: Army 1 and 2 Attack Zone (Shared)
      * 4: Door
+     * 5: Hovered
      * 
-     * FIXED TYPES
+     * FIXED TYPES - Used to get Line Types
      * 1: Edge Border Cubes
      * 2: Border Cube
      * 3: Major Grid Cubes
@@ -87,10 +88,12 @@ class CubeNode {
 
     constructor(coord) {
         this.coord = coord
-        this.types = new Set()
+        this.displayTypes = new Set([0])
+        this.fixedTypes = new Set()
+        this.setFixedTypes()
     }
 
-    checkIfFixedTypes() {
+    setFixedTypes() {
         if (!checkIfInArena(this.coord)) {
             this.setTypeBorder()
 
@@ -111,105 +114,109 @@ class CubeNode {
         return this.coord
     }
 
-    setType (num) {
-        this.types.add(num)
+    setFixedType(num) {
+        this.fixedTypes.add(num)
     }
 
-    removeType (num) {
-        this.types.delete(num)
+    setDisplayType(num) {
+        this.displayTypes.add(num)
+    }
+
+    removeFixedType(num) {
+        this.fixedTypes.delete(num)
+    }
+
+    removeDisplayType(num) {
+        this.displayTypes.delete(num)
     }
 
     setTypeEdgeBorder() {
-        this.types.setType(1)
+        this.setFixedType(1)
     }
 
     removeTypeEdgeBorder() {
-        this.types.removeType(1)
+        this.removeFixedType(1)
     }
 
     setTypeBorder() {
-        this.types.setType(2)
+        this.setFixedType(2)
     }
 
     removeTypeBorder() {
-        this.types.removeType(2)
+        this.removeFixedType(2)
     }
 
     setTypeMajor() {
-        this.types.setType(3)
+        this.setFixedType(3)
     }
 
     removeTypeMajor() {
-        this.types.removeType(3)
+        this.removeFixedType(3)
     }
 
     setTypeAttackZoneArmy1() {
-        this.types.setType(4)
+        this.setDisplayType(1)
     }
 
     removeTypeAttackZoneArmy1() {
-        this.types.removeType(4)
+        this.removeDisplayType(1)
     }
 
     setTypeAttackZoneArmy2() {
-        this.types.setType(5)
+        this.setDisplayType(2)
     }
 
     removeTypeAttackZoneArmy2() {
-        this.types.removeType(5)
+        this.removeDisplayType(2)
     }
 
     setTypeAttackZoneShared() {
-        this.types.setType(6)
+        this.setDisplayType(3)
     }
 
     removeTypeAttackZoneShared() {
-        this.types.removeType(6)
+        this.removeDisplayType(3)
     }
 
     setTypeDoor() {
-        this.types.setType(7)
+        this.setDisplayType(4)
     }
 
     removeTypeDoor() {
-        this.types.removeType(7)
+        this.removeDisplayType(4)
     }
 
     setTypeHovered() {
-        this.types.setType(8)
+        this.setDisplayType(5)
     }
 
     removeTypeHovered() {
-        this.types.removeType(8)
+        this.removeDisplayType(5)
     }
 
-    removeVariableTypes() {
-        this.types.removeTypeHovered()
-        this.types.removeTypeAttackZoneArmy1()
-        this.types.removeTypeAttackZoneArmy2()
-        this.types.removeTypeAttackZoneShared()        
+    resetDisplayTypes() {
+        this.displayTypes.clear()
+        this.displayTypes.add(0)      
     }
 
     getDisplayType() {
-
+        return Math.max(...this.displayTypes)
     }
 }
 
-// const lineColorScheme = {
-//     0: 
-// }
-
 class LineEdge {
 
-    constructor(coord1, coord2) {
-        this.createLine(coord1, coord2)
+    constructor(node1, node2) {
+        this.node1 = node1
+        this.node2 = node2
+        this.createLine()
         this.priorities = new Set()
     }
 
-    createLine (coord1, coord2) {
+    createLine () {
 
-        const [node1X, node1Y, node1Z] = coord1
-        const [node2X, node2Y, node2Z] = coord2
+        const [node1X, node1Y, node1Z] = this.node1.getCoord()
+        const [node2X, node2Y, node2Z] = this.node2.getCoord()
 
         const avgX = (node1X + node2X) / 2
         const avgY = (node1Y + node2Y) / 2
@@ -246,6 +253,11 @@ class LineEdge {
     }
 }
 
+const createCoordKey = (coord) => {
+    const [x,y,z] = coord
+
+    return `${x}-${y}-${z}`
+}
 
 class ArenaGraph {
     constructor () {
@@ -262,7 +274,7 @@ class ArenaGraph {
             for (let j = -1; j < ARENA_SPECS.ARENA_LENGTH + 1; j++) {
                 for (let k = -1; k < ARENA_SPECS.ARENA_LENGTH + 1; k++) {
                     const node = new CubeNode([i,j,k])
-                    this.nodesMap.set([i,j,k], node)
+                    this.nodesMap.set(createCoordKey([i,j,k]), node)
                     this.nodes.push(node)
                 }
             }
@@ -282,7 +294,7 @@ class ArenaGraph {
         for (let i = 0; i < this.nodes.length - 1; i++) {
             for (let j = i+1; j < this.nodes.length; j++) {
                 if (checkIfEdge(this.nodes[i].getCoord(), this.nodes[j].getCoord())) {
-                    const edge = new LineEdge(this.nodes[i].getCoord(), this.nodes[j].getCoord())
+                    const edge = new LineEdge(this.nodes[i], this.nodes[j])
                     this.adjList[i].push(edge)
                 }
             }
@@ -312,33 +324,104 @@ class ArenaGraph {
 
     removeCubeVariableTypes(coords) {
         coords.forEach((coord) => {
-            const node = this.nodesMap.get(coord)
+            const node = this.nodesMap.get(createCoordKey(coord))
             node.removeVariableTypes()
         })
     }
 
     setCubesAttackZoneArmy1(coords) {
         coords.forEach((coord) => {
-            const node = this.nodesMap.get(coord)
+            const node = this.nodesMap.get(createCoordKey(coord))
             node.setTypeAttackZoneArmy1()
         })
     }
 
     setCubesAttackZoneArmy2(coords) {
         coords.forEach((coord) => {
-            const node = this.nodesMap.get(coord)
+            const node = this.nodesMap.get(createCoordKey(coord))
             node.setTypeAttackZoneArmy2()
         })
     }
 
     setCubesAttackZoneShared(coords) {
         coords.forEach((coord) => {
-            const node = this.nodesMap.get(coord)
+            const node = this.nodesMap.get(createCoordKey(coord))
             node.setTypeAttackZoneShared()
         })
     }
 }
 
 const arenaGraph = new ArenaGraph()
+
+// Testing Parameters
+arenaGraph.setCubesAttackZoneArmy1([
+    [4,4,0],
+    [4,5,0],
+    [4,6,0],
+    [5,4,0],
+    [5,5,0],
+    [5,6,0],
+    [6,4,0],
+    [6,5,0],
+    [6,6,0],
+    [4,4,1],
+    [4,5,1],
+    [4,6,1],
+    [5,4,1],
+    [5,5,1],
+    [5,6,1],
+    [6,4,1],
+    [6,5,1],
+    [6,6,1],
+    [4,4,2],
+    [4,5,2],
+    [4,6,2],
+    [5,4,2],
+    [5,5,2],
+    [5,6,2],
+    [6,4,2],
+    [6,5,2],
+    [6,6,2]
+])
+arenaGraph.setCubesAttackZoneArmy2([
+    [4,4,2],
+    [4,5,2],
+    [4,6,2],
+    [5,4,2],
+    [5,5,2],
+    [5,6,2],
+    [6,4,2],
+    [6,5,2],
+    [6,6,2],
+    [4,4,3],
+    [4,5,3],
+    [4,6,3],
+    [5,4,3],
+    [5,5,3],
+    [5,6,3],
+    [6,4,3],
+    [6,5,3],
+    [6,6,3],
+    [4,4,4],
+    [4,5,4],
+    [4,6,4],
+    [5,4,4],
+    [5,5,4],
+    [5,6,4],
+    [6,4,4],
+    [6,5,4],
+    [6,6,4]
+])
+arenaGraph.setCubesAttackZoneShared([
+    [4,4,2],
+    [4,5,2],
+    [4,6,2],
+    [5,4,2],
+    [5,5,2],
+    [5,6,2],
+    [6,4,2],
+    [6,5,2],
+    [6,6,2]
+])
 
 export default arenaGraph
