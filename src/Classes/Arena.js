@@ -1,3 +1,12 @@
+/**
+ * 
+ * 
+ * THIS IS REDUNDANT AND WILL BE REMOVED IN THE FUTURE
+ * 
+ * 
+ * 
+ */
+
 import { checkIfInArena, ARENA_SPECS } from "../globals"
 
 /**

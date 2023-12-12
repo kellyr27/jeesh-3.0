@@ -67,16 +67,16 @@ const LINE_COLOR_SCHEME = {
         lineWidth: 4
     },
     'attackZoneArmy1': {
-        color: '#ff0000',
-        lineWidth: 0.35
+        color: '#000000',
+        lineWidth: 6
     },
     'attackZoneArmy2': {
-        color: '#0000ff',
-        lineWidth: 0.35
+        color: '#000000',
+        lineWidth: 6
     },
     'attackZoneShared': {
-        color: '#800080',
-        lineWidth: 0.35
+        color: '#000000',
+        lineWidth: 6
     },
     'door': {
         color: '#ffff00',
@@ -96,6 +96,7 @@ export default function ArenaGrid() {
             {arenaGraph.getEdges().map((lineEdge, index) => {
                 const displayType = lineEdge.getType()
                 const colorScheme = DISPLAY_LINE_TO_COLOR_SCHEME[displayType]
+
                 return (
                     <>
                         <Line 
@@ -109,6 +110,7 @@ export default function ArenaGrid() {
             {arenaGraph.getNodesInArena().map((node, index) => {
                 const displayType = node.getDisplayType()
                 const colorScheme = DISPLAY_TYPE_TO_COLOR_SCHEME[displayType]
+
                 return (
                     <>
                         <Box 

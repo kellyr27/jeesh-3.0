@@ -93,7 +93,7 @@ const MAJOR_CUBE_CENTER_COORDS = getCuboidCenterCoords()
 export default class CubeNode {
     /**
      * DISPLAY TYPES (order of Display priority)
-     * 0: Default
+     * 0: Default - Not used
      * 1: Army 1 Attack Zone
      * 2: Army 2 Attack Zone
      * 3: Army 1 and 2 Attack Zone (Shared)
@@ -130,6 +130,10 @@ export default class CubeNode {
         if (checkIfCoordIsInnerBorder(this.coord)) {
             this.setType_InnerBorder()
         }
+    }
+
+    hasDisplayType() {
+        return this.displayTypes.size > 1
     }
 
     getCoord() {
@@ -202,6 +206,11 @@ export default class CubeNode {
         this.removeDisplayType(1)
     }
 
+    hasType_AttackZoneArmy1() {
+        return this.displayTypes.has(1)
+    }
+
+
     setType_AttackZoneArmy2() {
         this.setDisplayType(2)
     }
@@ -210,12 +219,20 @@ export default class CubeNode {
         this.removeDisplayType(2)
     }
 
+    hasType_AttackZoneArmy2() {
+        return this.displayTypes.has(2)
+    }
+
     setType_AttackZoneShared() {
         this.setDisplayType(3)
     }
 
     removeType_AttackZoneShared() {
         this.removeDisplayType(3)
+    }
+
+    hasType_AttackZoneShared() {
+        return this.displayTypes.has(3)
     }
 
     setType_Door() {
@@ -297,4 +314,43 @@ export default class CubeNode {
             return false
         }
     }
+
+    static isArmy1AttackZoneEdgeBetweenNodes(node1, node2) {
+        if (node1.hasType_AttackZoneArmy1() && !node2.hasDisplayType()) {
+            return true
+        } else if (!node1.hasDisplayType() && node2.hasType_AttackZoneArmy1()) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    static isArmy2AttackZoneEdgeBetweenNodes(node1, node2) {
+        if (node1.hasType_AttackZoneArmy2() && !node2.hasDisplayType()) {
+            return true
+        } else if (!node1.hasDisplayType() && node2.hasType_AttackZoneArmy2()) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    static isArmySharedAttackZoneEdgeBetweenNodes(node1, node2) {
+        if (node1.hasType_AttackZoneShared() && !node2.hasDisplayType()) {
+            return true
+        } else if (!node1.hasDisplayType() && node2.hasType_AttackZoneShared()) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    static isHoveredEdgeBetweenNodes(node1, node2) {
+        if (node1.hasType_Hovered() || node2.hasType_Hovered()) {
+            return true
+        } else {
+            return false
+        }
+    }
+
 }

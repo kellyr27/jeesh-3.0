@@ -95,6 +95,12 @@ class ArenaGraph {
         })
     }
 
+    updateLineEdgesDisplay () {
+        this.getEdges().forEach((edge) => {
+            edge.setDisplayTypes()
+        })
+    }
+
     removeCubeVariableTypes(coords) {
         coords.forEach((coord) => {
             const node = this.nodesMap.get(createCoordKey(coord))
@@ -105,21 +111,24 @@ class ArenaGraph {
     setCubesAttackZoneArmy1(coords) {
         coords.forEach((coord) => {
             const node = this.nodesMap.get(createCoordKey(coord))
-            node.setTypeAttackZoneArmy1()
+            node.setType_AttackZoneArmy1()
+            this.updateLineEdgesDisplay()
         })
     }
 
     setCubesAttackZoneArmy2(coords) {
         coords.forEach((coord) => {
             const node = this.nodesMap.get(createCoordKey(coord))
-            node.setTypeAttackZoneArmy2()
+            node.setType_AttackZoneArmy2()
+            this.updateLineEdgesDisplay()
         })
     }
 
     setCubesAttackZoneShared(coords) {
         coords.forEach((coord) => {
             const node = this.nodesMap.get(createCoordKey(coord))
-            node.setTypeAttackZoneShared()
+            node.setType_AttackZoneShared()
+            this.updateLineEdgesDisplay()
         })
     }
 }

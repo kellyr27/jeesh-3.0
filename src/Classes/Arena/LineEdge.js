@@ -68,6 +68,23 @@ export default class LineEdge {
         }
     }
 
+    setDisplayTypes () {
+        if (CubeNode.isArmy1AttackZoneEdgeBetweenNodes(this.node1, this.node2)) {
+            this.types.add(3)
+        }
+
+        if (CubeNode.isArmy2AttackZoneEdgeBetweenNodes(this.node1, this.node2)) {
+            this.types.add(4)
+        }
+
+        if (CubeNode.isArmySharedAttackZoneEdgeBetweenNodes(this.node1, this.node2)) {
+            this.types.add(5)
+        }
+
+        //TODO: Implement Hovered square updates seperately
+
+    }
+
     getType() {
         return Math.max(...this.types)
     }
