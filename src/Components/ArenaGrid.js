@@ -42,20 +42,67 @@ const CUBE_COLOR_SCHEME = {
     },
 }
 
+const DISPLAY_LINE_TO_COLOR_SCHEME = {
+    0: 'default',
+    1: 'border',
+    2: 'majorGrid',
+    3: 'attackZoneArmy1',
+    4: 'attackZoneArmy2',
+    5: 'attackZoneShared',
+    6: 'door',
+    7: 'hovered'
+}
+
+const LINE_COLOR_SCHEME = {
+    'default': {
+        color: '#ff00ff',
+        lineWidth: 0.3
+    },
+    'border': {
+        color: '#ffffff',
+        lineWidth: 2
+    },
+    'majorGrid': {
+        color: '#ffffff',
+        lineWidth: 0.1
+    },
+    'attackZoneArmy1': {
+        color: '#ff0000',
+        lineWidth: 0.35
+    },
+    'attackZoneArmy2': {
+        color: '#0000ff',
+        lineWidth: 0.35
+    },
+    'attackZoneShared': {
+        color: '#800080',
+        lineWidth: 0.35
+    },
+    'door': {
+        color: '#ffff00',
+        lineWidth: 2
+    },
+    'hovered': {
+        color: '#F98B88',
+        lineWidth: 0.1
+    },
+}
+
 export default function ArenaGrid() {
 
 
     return (
         <>
-            {arenaGraph.getEdges().map((el, index) => {
-                const a = randColor()
-
+            {arenaGraph.getEdges().map((lineEdge, index) => {
+                const displayType = lineEdge.getType()
+                const colorScheme = DISPLAY_LINE_TO_COLOR_SCHEME[displayType]
+                
                 return (
                     <>
                         <Line 
-                            points={centreCoords(el.points)}
-                            color={a}
-                            linewidth={0.7}
+                            points={centreCoords(lineEdge.getPoints())}
+                            color={LINE_COLOR_SCHEME[colorScheme]['color']}
+                            linewidth={LINE_COLOR_SCHEME[colorScheme]['lineWidth']}
                         />
                     </>
                 )

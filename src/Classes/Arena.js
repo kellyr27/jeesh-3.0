@@ -1,4 +1,4 @@
-import { checkIfInArena, ARENA_SPECS } from "../globals"
+import { checkIfInArena, ARENA_SPECS, positionInArray } from "../globals"
 
 /**
  * Checks if an Edge exists between two coordinates
@@ -69,6 +69,40 @@ const checkIfCoordisDoor = (coord) => {
     }
 }
 
+// Check if a Coord in on the Inner Border Edge
+const checkIfCoordIsInnerBorder = (coord) => {
+    if (coord.contains(0) || coord.contains(ARENA_SPECS.ARENA_LENGTH - 1)) {
+        return true
+    } else {
+        return false
+    }
+}
+
+const getMajorCubeCentres = () => {
+    const majorCubeCentres = []
+
+    for (let i = 2; i < ARENA_SPECS.ARENA_LENGTH; i += 3) {
+        for (let j = 2; j < ARENA_SPECS.ARENA_LENGTH; j += 3) {
+            for (let k = 2; k < ARENA_SPECS.ARENA_LENGTH; k += 3) {
+                majorCubeCentres.push([i,j,k])
+            }
+        }
+    }
+
+    return majorCubeCentres
+}
+
+const MAJOR_CUBE_CENTRES = getMajorCubeCentres()
+
+const checkIfCoordIsMajorGridEdge = (coord) => {
+    if (checkIfCoordIsInnerBorder(coord) && checkIfInArena(coord)) {
+        return false
+    } else if (positionInArray(coord, MAJOR_CUBE_CENTRES)) {
+        return false
+    } else {
+        return true
+    }
+}
 
 class CubeNode {
     /**
@@ -83,7 +117,8 @@ class CubeNode {
      * FIXED TYPES - Used to get Line Types
      * 1: Edge Border Cubes
      * 2: Border Cube
-     * 3: Major Grid Cubes
+     * 3: Major Grid Edge Cubes
+     * 4: Inner Border Cubes
      */
 
     constructor(coord) {
@@ -107,7 +142,13 @@ class CubeNode {
             this.setTypeDoor()
         }
 
-        //TODO: Check if Major
+        if (checkIfCoordIsInnerBorder(this.coord)) {
+            this.setTypeInnerBorder()
+        }
+
+        if (checkIfCoordIsMajorGridEdge(this.coord)) {
+            this.setTypeMajor()
+        }
     }
 
     getCoord() {
@@ -152,6 +193,14 @@ class CubeNode {
 
     removeTypeMajor() {
         this.removeFixedType(3)
+    }
+
+    setTypeInnerBorder() {
+        this.setFixedType(4)
+    }
+
+    removeTypeInnerBorder() {
+        this.removeFixedType(4)
     }
 
     setTypeAttackZoneArmy1() {
@@ -202,15 +251,63 @@ class CubeNode {
     getDisplayType() {
         return Math.max(...this.displayTypes)
     }
+
+    // A Border Line is between a Edge Border Cube and a Non Border Cube
+    static isBorderLineBetweenNodes(node1, node2) {
+        if (node1.fixedTypes.has(1) && !node2.fixedTypes.has(2)) {
+            return true
+        } else if (!node1.fixedTypes.has(2) && node2.fixedTypes.has(1)) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    // TODO: Implement Major Lines
+    static isMajorLineBetweenNodes(node1, node2) {
+        if (node1.fixedTypes.has(3) && node2.fixedTypes.has(3)) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    // Check whether the Line Surrounds a Door
+    static isDoorLineBetweenNodes(node1, node2) {
+        if (node1.fixedTypes.has(4) || node2.fixedTypes.has(4)) {
+            return true
+        } else {
+            return false
+        }
+    }
 }
 
 class LineEdge {
+
+
+    /**
+     * TYPES
+     * 0: Default
+     * 1: Border Line
+     * 2: Major Grid Line
+     * 3: Army 1 Attack Zone
+     * 4: Army 2 Attack Zone
+     * 5: Army 1 and 2 Attack Zone (Shared)
+     * 6: Door
+     * 7: Hovered
+     */
 
     constructor(node1, node2) {
         this.node1 = node1
         this.node2 = node2
         this.createLine()
-        this.priorities = new Set()
+        this.priorities = new Set() // TODO: Remove once redundant
+        this.types = new Set([0])
+        this.setFixedTypes()
+    }
+
+    getPoints () {
+        return this.points
     }
 
     createLine () {
@@ -240,6 +337,20 @@ class LineEdge {
         }
     }
 
+    setFixedTypes () {
+        if (CubeNode.isBorderLineBetweenNodes(this.node1, this.node2)) {
+            this.types.add(1)
+        }
+
+        if (CubeNode.isMajorLineBetweenNodes(this.node1, this.node2)) {
+            this.types.add(2)
+        }
+
+        if (CubeNode.isDoorLineBetweenNodes(this.node1, this.node2)) {
+            this.types.add(6)
+        }
+    }
+
     setPriority (num) {
         this.priorities.add(num)
     }
@@ -250,6 +361,10 @@ class LineEdge {
 
     getHighestPriority () {
         return Math.max(...this.priorities)
+    }
+
+    getType() {
+        return Math.max(...this.types)
     }
 }
 
