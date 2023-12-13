@@ -35,7 +35,6 @@ class ArenaGraph {
     constructor () {
         this.nodesMap = new Map()
         this.createNodes()
-        this.createEmptyAdjList()   // MAY BE REDUNDANT
         this.edges = new Set()
         this.createEdges()
         this.combinedEdges = this.createCombinedEdges()
@@ -53,14 +52,6 @@ class ArenaGraph {
         }
     }
 
-    // Creates an Empty Adjacency List
-    createEmptyAdjList () {
-        const numOfNodes = this.nodesMap.size
-        this.adjList = Array(numOfNodes).fill().map(()=> {
-            return []
-        })
-    }
-
     // Creates an Edge between two Nodes if they are adjacent, adds it to the Adjacency List - TODO: Fix this.nodes
     createEdges () {
 
@@ -74,7 +65,6 @@ class ArenaGraph {
 
                 if (checkIfEdgeBetweenNodes(node1.getCoord(), node2.getCoord())) {
                     const edge = new LineEdge(node1, node2)
-                    this.adjList[i].push(edge)
                     this.edges.add(edge)
                 }
             }
@@ -112,26 +102,41 @@ class ArenaGraph {
         })
     }
 
-    removeCubeVariableTypes(coords) {
-        coords.forEach((coord) => {
-            const node = this.nodesMap.get(createCoordKey(coord))
-            node.removeVariableTypes()
+    resetNodeDisplayTypes() {
+        this.getNodes().forEach((node) => {
+            node.resetDisplayTypes()
         })
     }
+
+    resetEdgeDisplayTypes() {
+        this.getEdges().forEach((edge) => {
+            edge.resetEdgeDisplayTypes()
+        })
+    }
+
 
     setCubesAttackZoneArmy1(coords) {
         coords.forEach((coord) => {
             const node = this.nodesMap.get(createCoordKey(coord))
             node.setType_AttackZoneArmy1()
-            this.updateLineEdgesDisplay()
         })
+    }
+
+    updateVariableTypes(coordsArmy1AttackZone, coordsArmy2AttackZone, coordsSharedAttackZone) {
+        this.resetNodeDisplayTypes()
+        this.resetEdgeDisplayTypes()
+
+        this.setCubesAttackZoneArmy1(coordsArmy1AttackZone)
+        this.setCubesAttackZoneArmy2(coordsArmy2AttackZone)
+        this.setCubesAttackZoneShared(coordsSharedAttackZone)
+
+        this.updateLineEdgesDisplay()
     }
 
     setCubesAttackZoneArmy2(coords) {
         coords.forEach((coord) => {
             const node = this.nodesMap.get(createCoordKey(coord))
             node.setType_AttackZoneArmy2()
-            this.updateLineEdgesDisplay()
         })
     }
 
@@ -139,7 +144,6 @@ class ArenaGraph {
         coords.forEach((coord) => {
             const node = this.nodesMap.get(createCoordKey(coord))
             node.setType_AttackZoneShared()
-            this.updateLineEdgesDisplay()
         })
     }
 
@@ -173,7 +177,7 @@ const arenaGraph = new ArenaGraph()
 
 // TODO: Remove after testing
 // Testing Parameters
-arenaGraph.setCubesAttackZoneArmy1([
+arenaGraph.updateVariableTypes([
     [4,4,0],
     [4,5,0],
     [4,6,0],
@@ -201,37 +205,25 @@ arenaGraph.setCubesAttackZoneArmy1([
     [6,4,2],
     [6,5,2],
     [6,6,2]
-])
-arenaGraph.setCubesAttackZoneArmy2([
-    [4,4,2],
-    [4,5,2],
-    [4,6,2],
-    [5,4,2],
-    [5,5,2],
-    [5,6,2],
-    [6,4,2],
-    [6,5,2],
-    [6,6,2],
-    [4,4,3],
-    [4,5,3],
-    [4,6,3],
-    [5,4,3],
+], [
     [5,5,3],
     [5,6,3],
-    [6,4,3],
+    [5,7,3],
     [6,5,3],
     [6,6,3],
-    [4,4,4],
-    [4,5,4],
-    [4,6,4],
-    [5,4,4],
+    [6,7,3],
+    [7,5,3],
+    [7,6,3],
+    [7,7,3],
     [5,5,4],
     [5,6,4],
-    [6,4,4],
+    [5,7,4],
     [6,5,4],
-    [6,6,4]
-])
-arenaGraph.setCubesAttackZoneShared([
+    [6,6,4],
+    [6,7,4],
+    [7,5,4],
+    [7,6,4],
+    [7,7,4]], [
     [4,4,2],
     [4,5,2],
     [4,6,2],
@@ -240,7 +232,7 @@ arenaGraph.setCubesAttackZoneShared([
     [5,6,2],
     [6,4,2],
     [6,5,2],
-    [6,6,2]
-])
+    [6,6,2], 
+    ])
 
 export default arenaGraph

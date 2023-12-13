@@ -16,7 +16,21 @@ export default class CombinedEdge {
     getType () {
 
         if (this.lineEdge2) {
-            return Math.max(this.lineEdge1.getType(), this.lineEdge2.getType())
+            let maxType = Math.max(this.lineEdge1.getType(), this.lineEdge2.getType())
+
+            // Special case to only show edges of the Attack Zones
+            if (maxType === 3 || maxType === 4 || maxType === 5) {
+                if ((this.lineEdge1.getType() === 3 || this.lineEdge1.getType() === 4 || this.lineEdge1.getType() === 5) && 
+                    (this.lineEdge2.getType() === 3 || this.lineEdge2.getType() === 4 || this.lineEdge2.getType() === 5)) {
+                        return 0;
+                }
+                else {
+                    return maxType
+                }
+            } else {
+                return maxType
+            }
+
         } else {
             return this.lineEdge1.getType()
         }

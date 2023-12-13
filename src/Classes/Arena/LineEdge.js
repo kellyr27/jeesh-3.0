@@ -8,9 +8,9 @@ export default class LineEdge {
      * 0: Default
      * 1: Border Line
      * 2: Cuboid Lines
-     * 3: Army 1 Attack Zone
-     * 4: Army 2 Attack Zone
-     * 5: Army 1 and 2 Attack Zone (Shared)
+     * 3: Army 1 Attack Zone - Display Type
+     * 4: Army 2 Attack Zone - Display Type
+     * 5: Army 1 and 2 Attack Zone (Shared) - Display Type
      * 6: Door
      * 7: Hovered
      */
@@ -25,6 +25,12 @@ export default class LineEdge {
 
     getPoints () {
         return this.points
+    }
+
+    resetEdgeDisplayTypes () {
+        this.types.delete(3)
+        this.types.delete(4)
+        this.types.delete(5)
     }
 
     createLine () {
