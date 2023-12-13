@@ -6,16 +6,29 @@ export const ARENA_SPECS = {
 /**
  * Takes a coordinate and positions it to the centre of the Cube
  */
-export function centreCoord(coord) {
+export function offsetCoord(coord) {
     const [x, y, z] = coord
     const offset = 0.5 * ARENA_SPECS.CUBE_LENGTH
     return [x + offset, y + offset, z + offset]
 }
 
-export function centreCoords(coords) {
+export function offsetCoords(coords) {
     return coords.map((coord) => {
-        return centreCoord(coord)
+        return offsetCoord(coord)
     })
+}
+
+export function centerCoord(coord) {
+    const [x, y, z] = offsetCoord(coord)
+    const centerOffset = - ARENA_SPECS.ARENA_LENGTH / 2
+    return [x + centerOffset, y + centerOffset, z + centerOffset]
+}
+
+export function centerCoords (coords) {
+    return coords.map((coord) => {
+        return centerCoord(coord)
+    })
+
 }
 
 /**

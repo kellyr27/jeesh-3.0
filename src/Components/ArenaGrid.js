@@ -1,5 +1,5 @@
 import { Line, Box } from '@react-three/drei';
-import { ARENA_SPECS, centreCoord, centreCoords } from '../globals'
+import { ARENA_SPECS, offsetCoord, offsetCoords, centerCoord, centerCoords } from '../globals'
 import arenaGraph from '../Classes/Arena/Arena'
 import React, { useState } from 'react'
 import { useControls, folder } from 'leva'
@@ -8,7 +8,7 @@ const randColor = () =>  {
     return "#" + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0').toUpperCase();
 }
 
-const DISPLAY_TYPE_TO_COLOR_SCHEME = {
+const DISPLAY_NODE_TO_COLOR_SCHEME = {
     0: 'default',
     1: 'attackZoneArmy1',
     2: 'attackZoneArmy2',
@@ -17,7 +17,7 @@ const DISPLAY_TYPE_TO_COLOR_SCHEME = {
     5: 'hovered'
 }
 
-const CUBE_COLOR_SCHEME = {
+const NODE_COLOR_SCHEME = {
     'default': {
         color: '#ffffff',
         opacity: 0.01,
@@ -50,7 +50,7 @@ const CUBE_COLOR_SCHEME = {
     },
 }
 
-const DISPLAY_LINE_TO_COLOR_SCHEME = {
+const DISPLAY_EDGE_TO_COLOR_SCHEME = {
     0: 'default',
     1: 'border',
     2: 'majorGrid',
@@ -61,7 +61,7 @@ const DISPLAY_LINE_TO_COLOR_SCHEME = {
     7: 'hovered'
 }
 
-const LINE_COLOR_SCHEME = {
+const EDGE_COLOR_SCHEME = {
     'default': {
         color: '#ff00ff',
         lineWidth: 2,
@@ -115,8 +115,8 @@ function generateControlsFromScheme(scheme, title) {
 }
 
 const CONTROL_SCHEME_TITLES = {
-    CUBE_COLOR_SCHEME: 'Arena - Nodes',
-    LINE_COLOR_SCHEME: 'Arena - Edges'
+    NODE_COLOR_SCHEME: 'Arena - Nodes',
+    EDGE_COLOR_SCHEME: 'Arena - Edges'
 }
 
 export default function ArenaGrid() {
@@ -124,24 +124,24 @@ export default function ArenaGrid() {
     const edges = arenaGraph.getCombinedEdges()
     const nodes = arenaGraph.getNodesInArena()
 
-    const [nodeControls, setNodeControls] = useControls(() => (generateControlsFromScheme(CUBE_COLOR_SCHEME, CONTROL_SCHEME_TITLES.CUBE_COLOR_SCHEME)));
-    const [edgeControls, setEdgeControls] = useControls(() => (generateControlsFromScheme(LINE_COLOR_SCHEME, CONTROL_SCHEME_TITLES.LINE_COLOR_SCHEME)));
+    const [nodeControls, setNodeControls] = useControls(() => (generateControlsFromScheme(NODE_COLOR_SCHEME, CONTROL_SCHEME_TITLES.NODE_COLOR_SCHEME)));
+    const [edgeControls, setEdgeControls] = useControls(() => (generateControlsFromScheme(EDGE_COLOR_SCHEME, CONTROL_SCHEME_TITLES.EDGE_COLOR_SCHEME)));
 
 
     return (
         <>
             {edges.map((lineEdge, index) => {
                 const displayType = lineEdge.getType()
-                const colorScheme = DISPLAY_LINE_TO_COLOR_SCHEME[displayType]
+                const colorScheme = DISPLAY_EDGE_TO_COLOR_SCHEME[displayType]
 
                 return (
                     <React.Fragment key={index}>
-                        {edgeControls[`${CONTROL_SCHEME_TITLES.LINE_COLOR_SCHEME}.${colorScheme}.display`] && (
+                        {edgeControls[`${CONTROL_SCHEME_TITLES.EDGE_COLOR_SCHEME}.${colorScheme}.display`] && (
                             <Line
                                 key={index}
-                                points={centreCoords(lineEdge.getPoints())}
-                                color={edgeControls[`${CONTROL_SCHEME_TITLES.LINE_COLOR_SCHEME}.${colorScheme}.color`]}
-                                linewidth={edgeControls[`${CONTROL_SCHEME_TITLES.LINE_COLOR_SCHEME}.${colorScheme}.lineWidth`]}
+                                points={centerCoords(lineEdge.getPoints())}
+                                color={edgeControls[`${CONTROL_SCHEME_TITLES.EDGE_COLOR_SCHEME}.${colorScheme}.color`]}
+                                linewidth={edgeControls[`${CONTROL_SCHEME_TITLES.EDGE_COLOR_SCHEME}.${colorScheme}.lineWidth`]}
                             />
                         )}
                     </React.Fragment>
@@ -149,18 +149,18 @@ export default function ArenaGrid() {
             })}
             {nodes.map((node, index) => {
                 const displayType = node.getDisplayType()
-                const colorScheme = DISPLAY_TYPE_TO_COLOR_SCHEME[displayType]
+                const colorScheme = DISPLAY_NODE_TO_COLOR_SCHEME[displayType]
 
                 return (
                     <React.Fragment key={index}>
-                        {nodeControls[`${CONTROL_SCHEME_TITLES.CUBE_COLOR_SCHEME}.${colorScheme}.display`] && (
+                        {nodeControls[`${CONTROL_SCHEME_TITLES.NODE_COLOR_SCHEME}.${colorScheme}.display`] && (
                             <Box 
                                 key={index}
                                 args={[ARENA_SPECS.CUBE_LENGTH, ARENA_SPECS.CUBE_LENGTH, ARENA_SPECS.CUBE_LENGTH]}
-                                position={centreCoord(node.getCoord())}
-                                material-color={nodeControls[`${CONTROL_SCHEME_TITLES.CUBE_COLOR_SCHEME}.${colorScheme}.color`]}
+                                position={centerCoord(node.getCoord())}
+                                material-color={nodeControls[`${CONTROL_SCHEME_TITLES.NODE_COLOR_SCHEME}.${colorScheme}.color`]}
                                 material-transparent={true}
-                                material-opacity={nodeControls[`${CONTROL_SCHEME_TITLES.CUBE_COLOR_SCHEME}.${colorScheme}.opacity`]}
+                                material-opacity={nodeControls[`${CONTROL_SCHEME_TITLES.NODE_COLOR_SCHEME}.${colorScheme}.opacity`]}
                             />
                         )}
                     </React.Fragment>

@@ -113,6 +113,13 @@ export default class CubeNode {
         this.setFixedTypes()
     }
 
+    // Checks if the Coord is a Door and sets the Display Type
+    setDoorType() {
+        if (checkIfCoordIsDoor(this.coord)) {
+            this.setType_Door()
+        }
+    }
+
     setFixedTypes() {
         if (!checkIfInArena(this.coord)) {
             this.setType_OuterBorder()
@@ -123,9 +130,7 @@ export default class CubeNode {
             }
         }
 
-        if (checkIfCoordIsDoor(this.coord)) {
-            this.setType_Door()
-        }
+        this.setDoorType(this.coord)
 
         if (checkIfCoordIsInnerBorder(this.coord)) {
             this.setType_InnerBorder()
@@ -257,7 +262,8 @@ export default class CubeNode {
 
     resetDisplayTypes() {
         this.displayTypes.clear()
-        this.displayTypes.add(0)      
+        this.displayTypes.add(0)
+        this.setDoorType()      
     }
 
     getDisplayType() {
