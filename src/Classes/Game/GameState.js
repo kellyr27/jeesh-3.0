@@ -1,10 +1,9 @@
 import Army from "./Army"
 
-export default class GameState {
+class GameState {
 
-    constructor(army1StartingPoses, army2StartingPoses, starPositions) {
-        this.army1 = new Army(army1StartingPoses)
-        this.army2 = new Army(army2StartingPoses)
+    startGame(army1StartingPoses, army2StartingPoses, starPositions) {
+        this.armies = [new Army(army1StartingPoses), new Army(army2StartingPoses)]
         this.starCoordinates = starPositions
         this.currentMoveNum = 1
         this.currentArmyNum = 1
@@ -13,4 +12,11 @@ export default class GameState {
     getStarPositions() {
         return this.starCoordinates
     }
+
+    getStartingPoses(armyNum) {
+        return this.armies[armyNum].getPoses(0)
+    }
 }
+
+const gameState = new GameState()
+export default gameState

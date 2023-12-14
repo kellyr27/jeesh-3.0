@@ -4,6 +4,7 @@ import selectionPanelController from "../Classes/SelectionPanel";
 
 const Square = ({ x, y, isSelected, onSelect, xOffset, yOffset }) => {
     const [isHovered, setIsHovered] = useState(false);
+    
 
     const handleMouseEnter = () => {
         setIsHovered(true);
@@ -186,6 +187,13 @@ const SelectionPanel = () => {
     const handleTrapezoidHover = (points) => {
         setHoveredTrapezoid(points);
     };
+
+    const [currentDirections, setCurrentDirections] = useState(selectionPanelController.currentDirections);
+
+    useEffect(() => {
+        selectionPanelController.setUpdateCallback(setCurrentDirections);
+    }, [])
+
 
     return (
         <Stage

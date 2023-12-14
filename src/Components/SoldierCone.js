@@ -1,4 +1,4 @@
-import { offsetCoord } from "../globals"
+import { offsetCoord, centerCoord } from "../globals"
 import { useRef } from "react"
 import { arrayEquals } from "../globals"
 
@@ -18,26 +18,26 @@ const directionToRotation = (direction) => {
     }
 }
 
-export default function SoldierCone({initialPosition, soldierId, colorScheme}) {
+export default function SoldierCone({initialPosition, soldierId, colorScheme, initialPose}) {
     
     const ref = useRef()
     const {colorNormal, colorHovered, colorSelected} = colorScheme
-    const [initialCoord, initialDir] = initialPosition
+    const {position, direction} = initialPose
 
     return (
         <>
             <mesh visible
                 ref={ref}
                 soldierId={soldierId}
-                position={offsetCoord(initialCoord)}
-                rotation={directionToRotation(initialDir)}
+                position={centerCoord(position)}
+                rotation={directionToRotation(direction)}
 
             >
                 <coneGeometry args={[0.4, 0.8]}/>
                 <meshBasicMaterial color={colorNormal}/>
             </mesh>
             {/* <mesh visible
-                position={centreCoord(initialCoord)}
+                position={centreCoord(position)}
                 rotation={[0, 0, 0]}
             >
                 <coneGeometry args={[0.4, 0.8]}/>

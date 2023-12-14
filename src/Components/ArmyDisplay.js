@@ -1,33 +1,8 @@
 import SoldierCone from "./SoldierCone";
 import raycaster from "../Classes/Raycaster";
+import gameState from "../Classes/Game/GameState";
 
-export default function Army({ colorScheme }) {
-	const startingPositions = [
-		[
-			[4, 5, 10],
-			[0, 0, 1],
-		],
-		[
-			[5, 5, 10],
-			[0, 0, -1],
-		],
-		[
-			[6, 5, 10],
-			[0, 1, 0],
-		],
-		[
-			[4, 6, 10],
-			[0, -1, 0],
-		],
-		[
-			[5, 6, 10],
-			[-1, 0, 0],
-		],
-		[
-			[6, 6, 10],
-			[1, 0, 0],
-		],
-	];
+export default function DisplayArmy({ colorScheme }) {
 
 	const onClickHandler = (e) => {
 		const soldierId = e.intersections[0].object.soldierId;
@@ -61,15 +36,15 @@ export default function Army({ colorScheme }) {
 				onPointerOver={onPointerOverHandler}
 				onPointerOut={onPointerOutHandler}
 			>
-				{startingPositions.map((startingPosition, index) => {
+				{gameState.getStartingPoses(0).map((startingPose, index) => {
 					return (
-						<>
-							<SoldierCone
-								initialPosition={startingPosition}
-								soldierId={index}
-								colorScheme={colorScheme}
-							/>
-						</>
+						<SoldierCone
+							key={index}
+							initialPosition={startingPose}
+							soldierId={index}
+							colorScheme={colorScheme}
+							initialPose={startingPose}
+						/>
 					);
 				})}
 			</group>

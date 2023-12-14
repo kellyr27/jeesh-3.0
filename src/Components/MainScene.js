@@ -11,6 +11,7 @@ import { useControls } from "leva";
 import { AxesHelper } from "three";
 import AxesHelperComponent from "./AxesHelper";
 import DisplayArmy from "./ArmyDisplay";
+import gameState from "../Classes/Game/GameState";
 
 const createAxesHelper = () => {
     return new AxesHelper(20);
@@ -23,11 +24,59 @@ const updateAxesHelperVisibility = (axesHelper, isVisible) => {
 };
 
 const MainScene = () => {
-    const starCoords = [
+    const starPositions = [
         [0, 0, 0],
         [2, 2, 2],
         [2, 3, 3],
     ];
+
+    const army1StartingPoses = [
+        {
+            position: [4, 5, 10],
+            direction: [0, 0, -1]
+        },
+        {
+            position: [5, 5, 10],
+            direction: [0, 0, -1]
+        },
+        {
+            position: [6, 5, 10],
+            direction: [0, 0, -1]
+        },
+        {
+            position: [5, 4, 10],
+            direction: [0, 0, -1]
+        },
+        {
+            position: [5, 6, 10],
+            direction: [0, 0, -1]
+        },
+    ]
+
+    const army2StartingPoses = [
+        {
+            position: [4, 5, 0],
+            direction: [0, 0, 1]
+        },
+        {
+            position: [5, 5, 0],
+            direction: [0, 0, 1]
+        },
+        {
+            position: [6, 5, 0],
+            direction: [0, 0, 1]
+        },
+        {
+            position: [5, 4, 0],
+            direction: [0, 0, 1]
+        },
+        {
+            position: [5, 6, 0],
+            direction: [0, 0, 1]
+        },
+    ]
+
+    gameState.startGame(army1StartingPoses, army2StartingPoses, starPositions)
 
     const axesHelper = createAxesHelper();
 
@@ -68,7 +117,7 @@ const MainScene = () => {
             {/* <axesHelper args={[20]} /> */}
             {/* <AxesHelperComponent axesHelper={axesHelper} /> */}
             <ArenaGrid />
-            <StarField starCoords={starCoords} />
+            <StarField starCoords={starPositions} />
             <DisplayArmy colorScheme={{colorNormal, colorHovered, colorSelected}}/>
             {/* <SoldierCone initialPosition={[[5,5,10],[0,0,1]]} soldierId={[0,1]}/>
                 <SoldierCone initialPosition={[[4,5,10],[0,0,1]]} soldierId={[0,2]}/> */}

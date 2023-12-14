@@ -1,3 +1,4 @@
+import selectionPanelController from "./SelectionPanel"
 class UserRaycaster {
     constructor () {
         this.selectedIndex = -1
@@ -24,9 +25,16 @@ class UserRaycaster {
         obj.material.color.set(this.colorHovered)
     }
 
+    setSelectedIndex(index) {
+        this.selectedIndex = index
+        selectionPanelController.setSelectedSoldierIndex(index)
+    }
+
     updateOnClick (newIndex, newObject) {
+        
+        
         if (this.selectedIndex === newIndex) {
-            this.selectedIndex = -1
+            this.setSelectedIndex(-1)
             this.selectedObject = null
             this.setColorNormal(newObject)
             return
@@ -36,7 +44,7 @@ class UserRaycaster {
             this.setColorNormal(this.selectedObject)
         }
 
-        this.selectedIndex = newIndex
+        this.setSelectedIndex(newIndex)
         this.selectedObject = newObject
 
         this.setColorSelected(this.selectedObject)

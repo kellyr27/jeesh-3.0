@@ -38,7 +38,7 @@ export default class Army {
     // Gets an array of Soldier Positions at an given move.
     getPositions(moveNum) {
         return this.getPoses(moveNum).map((pose) => {
-            return pose[0]
+            return pose.position
         })
     }
 }
