@@ -1,19 +1,22 @@
-import React, { useState } from "react";
-import { Stage, Layer, Rect, Line } from "react-konva";
+import React, { useState, useRef, useEffect } from "react";
+import { Stage, Layer, Rect, Line, Text } from "react-konva";
+import selectionPanelController from "../Classes/SelectionPanel";
 
-const Square = ({ x, y, isSelected, onSelect }) => {
+const Square = ({ x, y, isSelected, onSelect, xOffset, yOffset }) => {
     const [isHovered, setIsHovered] = useState(false);
 
     const handleMouseEnter = () => {
         setIsHovered(true);
+        selectionPanelController.setMouseOffsets(xOffset, yOffset)
     };
 
     const handleMouseLeave = () => {
         setIsHovered(false);
+
     };
 
     const handleClick = () => {
-        onSelect(x, y);
+        onSelect(x, y, xOffset, yOffset);
     };
 
     return (
@@ -32,6 +35,7 @@ const Square = ({ x, y, isSelected, onSelect }) => {
 };
 
 const Trapezoid = ({
+    direction,
     points,
     fill,
     isHovered,
@@ -48,7 +52,7 @@ const Trapezoid = ({
     };
 
     const handleClick = () => {
-        onSelect(points);
+        onSelect(points, direction);
     };
 
     return (
@@ -64,19 +68,72 @@ const Trapezoid = ({
     );
 };
 
+const PanelText = ({ text, fontSize, fontFamily, fill, x, y }) => {
+    const textRef = useRef();
+
+    useEffect(() => {
+        if (textRef.current) {
+            const textWidth = textRef.current.width();
+            const textHeight = textRef.current.height();
+            textRef.current.offsetX(textWidth / 2);
+            textRef.current.offsetY(textHeight / 2);
+        }
+    }, [text]);
+
+    return (
+        <Text
+            ref={textRef}
+            x={x} // Half the width of the canvas
+            y={y} // Half the height of the canvas
+            text={text}
+            fontSize={fontSize}
+            fontFamily={fontFamily}
+            fill={fill}
+            align="center"
+            listening={false}
+        />
+    );
+};
+
+
+
 const SelectionPanel = () => {
     const [selectedSquare, setSelectedSquare] = useState({ x: null, y: null });
 
-    const handleSelect = (x, y) => {
+    const handleSelect = (x, y, xOffset, yOffset) => {
         setSelectedSquare({ x, y });
+        
     };
 
     const height = 250;
     const width = 250;
     const depthTrapezoid = 50;
 
-    const trapezoidPoints = [
-        [
+    const textPointPositions = {
+        left: {
+            x: depthTrapezoid/2,
+            y: height/2
+        },
+        right: {
+            x: width - depthTrapezoid/2,
+            y: height/2
+        },
+        top: {
+            x: width/2,
+            y: depthTrapezoid/2
+        },
+        bottom: {
+            x: width/2,
+            y: height - depthTrapezoid/2
+        },
+        center: {
+            x: width/2,
+            y: height/2
+        }
+    }
+
+    const trapezoidPoints = {
+        top: [
             0,
             0,
             width,
@@ -85,8 +142,8 @@ const SelectionPanel = () => {
             depthTrapezoid,
             depthTrapezoid,
             depthTrapezoid,
-        ], // Top
-        [
+        ],
+        right: [
             width - depthTrapezoid,
             depthTrapezoid,
             width,
@@ -95,18 +152,8 @@ const SelectionPanel = () => {
             height,
             width - depthTrapezoid,
             height - depthTrapezoid,
-        ], // Right
-        [
-            0,
-            0,
-            depthTrapezoid,
-            depthTrapezoid,
-            depthTrapezoid,
-            height - depthTrapezoid,
-            0,
-            height,
-        ], // Left
-        [
+        ],
+        bottom: [
             depthTrapezoid,
             height - depthTrapezoid,
             width - depthTrapezoid,
@@ -115,14 +162,25 @@ const SelectionPanel = () => {
             height,
             0,
             height,
-        ], // Bottom
-    ];
+        ],
+        left: [
+            0,
+            0,
+            depthTrapezoid,
+            depthTrapezoid,
+            depthTrapezoid,
+            height - depthTrapezoid,
+            0,
+            height,
+        ],
+    };
 
     const [selectedTrapezoid, setSelectedTrapezoid] = useState(null);
     const [hoveredTrapezoid, setHoveredTrapezoid] = useState(null);
 
-    const handleTrapezoidSelect = (points) => {
+    const handleTrapezoidSelect = (points, direction) => {
         setSelectedTrapezoid(points);
+        selectionPanelController.updateCurrentFace(direction)
     };
 
     const handleTrapezoidHover = (points) => {
@@ -141,13 +199,14 @@ const SelectionPanel = () => {
             }}
         >
             <Layer>
-                {trapezoidPoints.map((points, i) => (
+                {Object.entries(trapezoidPoints).map(([key, value], index) => (
                     <Trapezoid
-                        key={i}
-                        points={points}
+                        key={index}
+                        direction={key}
+                        points={value}
                         fill="lightgray"
-                        isHovered={hoveredTrapezoid === points}
-                        isSelected={selectedTrapezoid === points}
+                        isHovered={JSON.stringify(hoveredTrapezoid) === JSON.stringify(value)}
+                        isSelected={JSON.stringify(selectedTrapezoid) === JSON.stringify(value)}
                         onHover={handleTrapezoidHover}
                         onSelect={handleTrapezoidSelect}
                     />
@@ -156,6 +215,8 @@ const SelectionPanel = () => {
                     [...Array(3)].map((_, j) => (
                         <Square
                             key={`${i}-${j}`}
+                            xOffset={i-1}
+                            yOffset={-(j-1)}
                             x={50 + (i * 150) / 3}
                             y={50 + (j * 150) / 3}
                             isSelected={
@@ -166,8 +227,20 @@ const SelectionPanel = () => {
                         />
                     ))
                 )}
+                {Object.entries(textPointPositions).map(([key, value], index) => (
+                    <PanelText
+                        key={index}
+                        text={selectionPanelController.getText()[key]}
+                        fontSize={20}
+                        fontFamily="Arial"
+                        fill="black"
+                        x={textPointPositions[key].x}
+                        y={textPointPositions[key].y}
+                    />
+                ))}
             </Layer>
         </Stage>
     );
 };
+
 export default SelectionPanel;

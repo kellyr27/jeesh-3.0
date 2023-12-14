@@ -91,6 +91,15 @@ export default class LineEdge {
 
     }
 
+    // Checks if a line is inside an Attack Zone
+    checkIfInsideAttackZone () {
+        if (this.node1.hasType_AnyAttackZone() && this.node2.hasType_AnyAttackZone()) {
+            return true
+        } else {
+            return false
+        }
+    }
+
     getType() {
         return Math.max(...this.types)
     }

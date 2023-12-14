@@ -18,6 +18,11 @@ export default class CombinedEdge {
         if (this.lineEdge2) {
             let maxType = Math.max(this.lineEdge1.getType(), this.lineEdge2.getType())
 
+            // Removes all Lines inside an Attack Zone
+            if (this.lineEdge1.checkIfInsideAttackZone() && this.lineEdge2.checkIfInsideAttackZone()) {
+                return 0
+            }
+
             // Special case to only show edges of the Attack Zones
             if (maxType === 3 || maxType === 4 || maxType === 5) {
                 if ((this.lineEdge1.getType() === 3 || this.lineEdge1.getType() === 4 || this.lineEdge1.getType() === 5) && 

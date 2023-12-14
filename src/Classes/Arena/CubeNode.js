@@ -215,7 +215,6 @@ export default class CubeNode {
         return this.displayTypes.has(1)
     }
 
-
     setType_AttackZoneArmy2() {
         this.setDisplayType(2)
     }
@@ -268,6 +267,10 @@ export default class CubeNode {
 
     getDisplayType() {
         return Math.max(...this.displayTypes)
+    }
+
+    hasType_AnyAttackZone() {
+        return this.hasType_AttackZoneArmy1() || this.hasType_AttackZoneArmy2() || this.hasType_AttackZoneShared()
     }
 
     // A Border Line is between a Edge Border Cube and a Non Border Cube

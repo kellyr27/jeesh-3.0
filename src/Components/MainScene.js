@@ -10,6 +10,7 @@ import raycaster from "../Classes/Raycaster";
 import { useControls } from "leva";
 import { AxesHelper } from "three";
 import AxesHelperComponent from "./AxesHelper";
+import DisplayArmy from "./ArmyDisplay";
 
 const createAxesHelper = () => {
     return new AxesHelper(20);
@@ -68,7 +69,7 @@ const MainScene = () => {
             {/* <AxesHelperComponent axesHelper={axesHelper} /> */}
             <ArenaGrid />
             <StarField starCoords={starCoords} />
-            {/* <Army colorScheme={{colorNormal, colorHovered, colorSelected}}/> */}
+            <DisplayArmy colorScheme={{colorNormal, colorHovered, colorSelected}}/>
             {/* <SoldierCone initialPosition={[[5,5,10],[0,0,1]]} soldierId={[0,1]}/>
                 <SoldierCone initialPosition={[[4,5,10],[0,0,1]]} soldierId={[0,2]}/> */}
             {/* <QuadraticBezierLine 
