@@ -1,6 +1,7 @@
 export const ARENA_SPECS = {
     ARENA_LENGTH: 11,
-    CUBE_LENGTH: 1
+    CUBE_LENGTH: 1,
+    MAX_NUM_STARS: 81
 }
 
 /**
@@ -100,4 +101,11 @@ export function findIntersectionPositions(positionsList1, positionList2) {
     }
 
     return tempPositions
+}
+
+// Generates a random number in the range from min to max (inclusive)
+export function generateRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }

@@ -1,8 +1,9 @@
 import { Line, Box } from '@react-three/drei';
 import { ARENA_SPECS, offsetCoord, offsetCoords, centerCoord, centerCoords } from '../globals'
 import arenaGraph from '../Classes/Arena/Arena'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useControls, folder } from 'leva'
+import gameState from '../Classes/Game/GameState';
 
 const randColor = () =>  {
     return "#" + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0').toUpperCase();
@@ -121,12 +122,19 @@ const CONTROL_SCHEME_TITLES = {
 
 export default function ArenaGrid() {
 
-    const edges = arenaGraph.getCombinedEdges()
-    const nodes = arenaGraph.getNodesInArena()
+    // const edges = arenaGraph.getCombinedEdges()
+    // const nodes = arenaGraph.getNodesInArena()
 
     const [nodeControls, setNodeControls] = useControls(() => (generateControlsFromScheme(NODE_COLOR_SCHEME, CONTROL_SCHEME_TITLES.NODE_COLOR_SCHEME)));
     const [edgeControls, setEdgeControls] = useControls(() => (generateControlsFromScheme(EDGE_COLOR_SCHEME, CONTROL_SCHEME_TITLES.EDGE_COLOR_SCHEME)));
 
+    const [edges, setEdges] = useState(arenaGraph.getCombinedEdges());
+    const [nodes, setNodes] = useState(arenaGraph.getNodesInArena());
+
+    useEffect(() => {
+        setEdges(arenaGraph.getCombinedEdges());
+        setNodes(arenaGraph.getNodesInArena());
+    }, []);
 
     return (
         <>

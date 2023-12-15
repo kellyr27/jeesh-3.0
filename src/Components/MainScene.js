@@ -76,7 +76,7 @@ const MainScene = () => {
         },
     ]
 
-    gameState.startGame(army1StartingPoses, army2StartingPoses, starPositions)
+    // gameState.startGame(army1StartingPoses, army2StartingPoses, starPositions)
 
     const axesHelper = createAxesHelper();
 
@@ -117,7 +117,7 @@ const MainScene = () => {
             {/* <axesHelper args={[20]} /> */}
             {/* <AxesHelperComponent axesHelper={axesHelper} /> */}
             <ArenaGrid />
-            <StarField starCoords={starPositions} />
+            <StarField starCoords={gameState.getStarPositions()} />
             <DisplayArmy colorScheme={{colorNormal, colorHovered, colorSelected}}/>
             {/* <SoldierCone initialPosition={[[5,5,10],[0,0,1]]} soldierId={[0,1]}/>
                 <SoldierCone initialPosition={[[4,5,10],[0,0,1]]} soldierId={[0,2]}/> */}

@@ -3,14 +3,14 @@ import { equalCoords, equalPositions, ARENA_SPECS, checkIfInArena, findIntersect
 /**
  * Get all Attacked Cubes
  */
-const getAttackedCoords = (position) => {
-    const [coord, direction] = position
+const getAttackedCoords = (pose) => {
+    const [position, direction] = pose
 
     let attackedCoords = []
 
-    for (let i = coord[0] - 1; i <= coord[0] + 1; i++) {
-        for (let j = coord[1] - 1; j <= coord[1] + 1; j++) {
-            for (let k = coord[2] - 1; k <= coord[2] + 1; k++) {
+    for (let i = position[0] - 1; i <= position[0] + 1; i++) {
+        for (let j = position[1] - 1; j <= position[1] + 1; j++) {
+            for (let k = position[2] - 1; k <= position[2] + 1; k++) {
                 if (checkIfInArena([i,j,k])) {
                     attackedCoords.push([i,j,k])
                 }
@@ -18,45 +18,46 @@ const getAttackedCoords = (position) => {
         }
     }
 
-    if (equalPositions(direction, [1,0,0])) {
-        attackedCoords = attackedCoords.map((coord) => {
-            return [coord[0] + 2, coord[1], coord[2]]
+    // Offset Attacked Coords to match direction
+    if (equalPositions(direction, '+x')) {
+        attackedCoords = attackedCoords.map((position) => {
+            return [position[0] + 2, position[1], position[2]]
         })
-    } else if (equalPositions(direction, [-1,0,0])) {
-        attackedCoords = attackedCoords.map((coord) => {
-            return [coord[0] - 2, coord[1], coord[2]]
+    } else if (equalPositions(direction, '-x')) {
+        attackedCoords = attackedCoords.map((position) => {
+            return [position[0] - 2, position[1], position[2]]
         })
-    } else if (equalPositions(direction, [0,1,0])) {
-        attackedCoords = attackedCoords.map((coord) => {
-            return [coord[0], coord[1] + 2, coord[2]]
+    } else if (equalPositions(direction, '+y')) {
+        attackedCoords = attackedCoords.map((position) => {
+            return [position[0], position[1] + 2, position[2]]
         })
-    } else if (equalPositions(direction, [0,-1,0])) {
-        attackedCoords = attackedCoords.map((coord) => {
-            return [coord[0], coord[1] - 2, coord[2]]
+    } else if (equalPositions(direction, '-y')) {
+        attackedCoords = attackedCoords.map((position) => {
+            return [position[0], position[1] - 2, position[2]]
         })
-    } else if (equalPositions(direction, [0,0,1])) {
-        attackedCoords = attackedCoords.map((coord) => {
-            return [coord[0], coord[1], coord[2] + 2]
+    } else if (equalPositions(direction, '+z')) {
+        attackedCoords = attackedCoords.map((position) => {
+            return [position[0], position[1], position[2] + 2]
         })
-    } else if (equalPositions(direction, [0,0,-1])) {
-        attackedCoords = attackedCoords.map((coord) => {
-            return [coord[0], coord[1], coord[2] - 2]
+    } else if (equalPositions(direction, '-z')) {
+        attackedCoords = attackedCoords.map((position) => {
+            return [position[0], position[1], position[2] - 2]
         })
     }
 
     return attackedCoords
 }
 
-/**
- * TODO - REMOVE DUPLICATE
- */
-const getArmyAttackedCoords = (positions) => {
+const getArmyAttackedCoords = (poses) => {
     let armyAttackedCoords = []
 
-    for (const position of positions) {
-        let attackedCoords = getAttackedCoords(position)
+    for (const pose of poses) {
+        let attackedCoords = getAttackedCoords(pose)
         armyAttackedCoords = [...armyAttackedCoords, ...attackedCoords]
     }
+
+    // Remove duplicate coords (array) from array
+    armyAttackedCoords = [...new Set(armyAttackedCoords.map(JSON.stringify))].map(JSON.parse)
 
     return armyAttackedCoords
 }

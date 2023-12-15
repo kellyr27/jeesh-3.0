@@ -7,159 +7,168 @@
 const TRAPEZOID_DIRECTIONS = {
     '-y': {
         '-z': {
-            top: '+y',
-            right: '+x',
-            bottom: '-y',
-            left: '-x'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         },
         '+z': {
-            top: '+y',
-            right: '-x',
-            bottom: '-y',
-            left: '+x'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         },
         '-x': {
-            top: '+y',
-            right: '-z',
-            bottom: '-y',
-            left: '+z'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         },
         '+x': {
-            top: '+y',
-            right: '+z',
-            bottom: '-y',
-            left: '-z'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         }
     },
     '+y': {
         '+z': {
-            top: '-y',
-            right: '+x',
-            bottom: '+y',
-            left: '-x'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         },
         '-z': {
-            top: '-y',
-            right: '-x',
-            bottom: '+y',
-            left: '+x'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         },
         '+x': {
-            top: '-y',
-            right: '-z',
-            bottom: '+y',
-            left: '+z'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         },
         '-x': {
-            top: '-y',
-            right: '+z',
-            bottom: '+y',
-            left: '-z'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         }
     },
     '-z': {
         '+y': {
-            top: '+z',
-            right: '+x',
-            bottom: '-z',
-            left: '-x'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         },
         '-y': {
-            top: '+z',
-            right: '-x',
-            bottom: '-z',
-            left: '+x'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         },
         '+x': {
-            top: '+z',
-            right: '-y',
-            bottom: '-z',
-            left: '+y'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         },
         '-x': {
-            top: '+z',
-            right: '+y',
-            bottom: '-z',
-            left: '-y'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         }
     },
     '+z': {
         '-y': {
-            top: '-z',
-            right: '+x',
-            bottom: '+z',
-            left: '-x'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         },
         '+y': {
-            top: '-z',
-            right: '-x',
-            bottom: '+z',
-            left: '+x'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         },
         '-x': {
-            top: '-z',
-            right: '-y',
-            bottom: '+z',
-            left: '+y'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         },
         '+x': {
-            top: '-z',
-            right: '+y',
-            bottom: '+z',
-            left: '-y'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         }
     },
     '-x': {
         '-y': {
-            top: '+x',
-            right: '+z',
-            bottom: '-x',
-            left: '-z'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         },
         '+y': {
-            top: '+x',
-            right: '-z',
-            bottom: '-x',
-            left: '+z'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         },
         '-z': {
-            top: '+x',
-            right: '-y',
-            bottom: '-x',
-            left: '+y'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         },
         '+z': {
-            top: '+x',
-            right: '+y',
-            bottom: '-x',
-            left: '-y'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         }
     },
     '+x': {
         '+y': {
-            top: '-x',
-            right: '+z',
-            bottom: '+x',
-            left: '-z'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         },
         '-y': {
-            top: '-x',
-            right: '-z',
-            bottom: '+x',
-            left: '+z'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         },
         '+z': {
-            top: '-x',
-            right: '-y',
-            bottom: '+x',
-            left: '+y'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         },
         '-z': {
-            top: '-x',
-            right: '+y',
-            bottom: '+x',
-            left: '-y'
+            top: '',
+            right: '',
+            bottom: '',
+            left: ''
         }
+    }
+}
+
+const getOppositeDirection = (direction) => {
+    const [polarity, axis] = direction
+    if (polarity === '-') {
+        return `+${axis}`
+    } else {
+        return `-${axis}`
     }
 }
 
@@ -173,6 +182,7 @@ class SelectionPanelController {
         this.mouseYOffset = 0
         this.updateCurrentDirection()
         this.updateCallback = null
+        this.resetSelectionPanel()
     }
 
     // Used to update the text on the Selection Panel
@@ -193,6 +203,20 @@ class SelectionPanelController {
         }
     }
 
+    updateDisplayDirections (top, right, bottom, left, center) {
+        this.displayDirections = {
+            top: top,
+            right: right,
+            bottom: bottom,
+            left: left,
+            center: center
+        }
+        if (this.updateCallback) {
+            this.updateCallback(this.displayDirections);
+        }
+    }
+
+
     updateFaceAndDirections (previousFace, currentFace) {
         this.previousFace = previousFace
         this.currentFace = currentFace
@@ -200,7 +224,7 @@ class SelectionPanelController {
     }
 
     getText () {
-        return this.currentDirections
+        return this.displayDirections
     }
 
     setMouseOffsets (xOffset, yOffset) {
@@ -209,12 +233,49 @@ class SelectionPanelController {
     }
 
     resetSelectionPanel () {
-        this.updateFaceAndDirections('-y', '-z')
+        this.updateDisplayDirections('+y','+x','-y','-x','-z')
     }
 
     setSelectedSoldierIndex (index) {
         this.selectedSoldierIndex = index
         this.resetSelectionPanel()
+    }
+
+    // New set up
+    updateTrapezoidDirections (direction) {
+        if (direction === 'top') {
+            this.updateDisplayDirections(
+                getOppositeDirection(this.displayDirections.center),
+                this.displayDirections.right,
+                this.displayDirections.center,
+                this.displayDirections.left,
+                this.displayDirections.top
+            )
+        } else if (direction === 'right') {
+            this.updateDisplayDirections(
+                this.displayDirections.top,
+                getOppositeDirection(this.displayDirections.center),
+                this.displayDirections.bottom,
+                this.displayDirections.center,
+                this.displayDirections.right
+            )
+        } else if (direction === 'bottom') {
+            this.updateDisplayDirections(
+                this.displayDirections.center,
+                this.displayDirections.right,
+                getOppositeDirection(this.displayDirections.center),
+                this.displayDirections.left,
+                this.displayDirections.bottom
+            )
+        } else if (direction === 'left') {
+            this.updateDisplayDirections(
+                this.displayDirections.top,
+                this.displayDirections.center,
+                this.displayDirections.bottom,
+                getOppositeDirection(this.displayDirections.center),
+                this.displayDirections.left
+            )
+        }
     }
 }
 

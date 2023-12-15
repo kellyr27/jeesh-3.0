@@ -181,14 +181,14 @@ const SelectionPanel = () => {
 
     const handleTrapezoidSelect = (points, direction) => {
         setSelectedTrapezoid(points);
-        selectionPanelController.updateCurrentFace(direction)
+        selectionPanelController.updateTrapezoidDirections(direction)
     };
 
     const handleTrapezoidHover = (points) => {
         setHoveredTrapezoid(points);
     };
 
-    const [currentDirections, setCurrentDirections] = useState(selectionPanelController.currentDirections);
+    const [currentDirections, setCurrentDirections] = useState(selectionPanelController.displayDirections);
 
     useEffect(() => {
         selectionPanelController.setUpdateCallback(setCurrentDirections);
