@@ -13,46 +13,46 @@ export function generateRandomStarCoordinate() {
 const ARMY1_STARTING_POSES = [
     {
         position: [4, 5, 10],
-        direction: [0, 0, -1]
+        direction: '-z'
     },
     {
         position: [5, 5, 10],
-        direction: [0, 0, -1]
+        direction: '-z'
     },
     {
         position: [6, 5, 10],
-        direction: [0, 0, -1]
+        direction: '-z'
     },
     {
         position: [5, 4, 10],
-        direction: [0, 0, -1]
+        direction: '-z'
     },
     {
         position: [5, 6, 10],
-        direction: [0, 0, -1]
+        direction: '-z'
     },
 ]
 
 const ARMY2_STARTING_POSES = [
     {
         position: [4, 5, 0],
-        direction: [0, 0, 1]
+        direction: '+z'
     },
     {
         position: [5, 5, 0],
-        direction: [0, 0, 1]
+        direction: '+z'
     },
     {
         position: [6, 5, 0],
-        direction: [0, 0, 1]
+        direction: '+z'
     },
     {
         position: [5, 4, 0],
-        direction: [0, 0, 1]
+        direction: '+z'
     },
     {
         position: [5, 6, 0],
-        direction: [0, 0, 1]
+        direction: '+z'
     },
 ]
 
@@ -65,46 +65,51 @@ const ARMY_NUM_TO_INDEX = {
  * Get all Attacked Cubes
  */
 const getAttackedCoords = (pose) => {
-    const [position, direction] = pose
+    const {position, direction} = pose
 
     let attackedCoords = []
 
     for (let i = position[0] - 1; i <= position[0] + 1; i++) {
         for (let j = position[1] - 1; j <= position[1] + 1; j++) {
             for (let k = position[2] - 1; k <= position[2] + 1; k++) {
-                if (checkIfInArena([i,j,k])) {
-                    attackedCoords.push([i,j,k])
-                }
+                attackedCoords.push([i,j,k])
             }
         }
     }
 
     // Offset Attacked Coords to match direction
-    if (equalPositions(direction, '+x')) {
+    if (direction === '+x') {
         attackedCoords = attackedCoords.map((position) => {
             return [position[0] + 2, position[1], position[2]]
         })
-    } else if (equalPositions(direction, '-x')) {
+    } else if (direction === '-x') {
         attackedCoords = attackedCoords.map((position) => {
             return [position[0] - 2, position[1], position[2]]
         })
-    } else if (equalPositions(direction, '+y')) {
+    } else if (direction === '+y') {
         attackedCoords = attackedCoords.map((position) => {
             return [position[0], position[1] + 2, position[2]]
         })
-    } else if (equalPositions(direction, '-y')) {
+    } else if (direction === '-y') {
         attackedCoords = attackedCoords.map((position) => {
             return [position[0], position[1] - 2, position[2]]
         })
-    } else if (equalPositions(direction, '+z')) {
+    } else if (direction === '+z') {
+        console.log('here1')
         attackedCoords = attackedCoords.map((position) => {
             return [position[0], position[1], position[2] + 2]
         })
-    } else if (equalPositions(direction, '-z')) {
+    } else if (direction === '-z') {
+        console.log('here2')
         attackedCoords = attackedCoords.map((position) => {
             return [position[0], position[1], position[2] - 2]
         })
     }
+
+    // Remove Coords that are outside the Arena
+    attackedCoords = attackedCoords.filter((position) => {
+        return checkIfInArena(position)
+    })
 
     return attackedCoords
 }
@@ -155,22 +160,19 @@ class GameState {
 
     getStartingPoses(armyNum) {
         console.log()
-        return this.armies[1].getPoses(0)
+        return this.armies[armyNum].getPoses(0)
     }
 
     getCurrentAttackZones() {
-        // console.log(this)
-        // const army1Poses = this.armies[ARMY_NUM_TO_INDEX[1]].getPoses(this.currentMoveNum)
-        // console.log(army1Poses)
-        // return [getArmyAttackedCoords(army1Poses)]
-    }
+        const army1Poses = this.armies[ARMY_NUM_TO_INDEX[1]].getPoses(this.currentMoveNum)
+        
+        console.log(getArmyAttackedCoords(army1Poses))
 
-    updateArenaDisplay() {
-        arenaGraph.updateVariableTypes(
-            [[0,0,0]],
-            [[1,1,1]],
-            [[2,2,2]]
-        )
+        return {
+            army1AttackZone: getArmyAttackedCoords(army1Poses), 
+            army2AttackZone: [], 
+            sharedAttackZone: []
+        }
     }
 }
 

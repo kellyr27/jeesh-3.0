@@ -3,17 +3,17 @@ import { useRef } from "react"
 import { arrayEquals } from "../globals"
 
 const directionToRotation = (direction) => {
-    if (arrayEquals(direction, [0,0,1])) {
+    if (direction === '+z') {
         return [- Math.PI / 2, 0, 0]
-    } else if (arrayEquals(direction, [0,0,-1])) {
+    } else if (direction === '-z') {
         return [Math.PI / 2,0,0]
-    } else if (arrayEquals(direction, [0,1,0])) {
+    } else if (direction === '+y') {
         return [Math.PI,0,0]
-    } else if (arrayEquals(direction, [0,-1,0])) {
+    } else if (direction === '-y') {
         return [0,0,0]
-    } else if (arrayEquals(direction, [1,0,0])) {
+    } else if (direction === '+x') {
         return [0,0,Math.PI / 2]
-    } else if (arrayEquals(direction, [-1,0,0])) {
+    } else if (direction === '-x') {
         return [0,0,-Math.PI / 2]
     }
 }

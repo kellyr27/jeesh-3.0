@@ -3,11 +3,7 @@ import { ARENA_SPECS, offsetCoord, offsetCoords, centerCoord, centerCoords } fro
 import arenaGraph from '../Classes/Arena/Arena'
 import React, { useState, useEffect } from 'react'
 import { useControls, folder } from 'leva'
-import gameState from '../Classes/Game/GameState';
-
-const randColor = () =>  {
-    return "#" + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0').toUpperCase();
-}
+import dispatcher from '../Classes/Dispatcher';
 
 const DISPLAY_NODE_TO_COLOR_SCHEME = {
     0: 'default',
@@ -132,8 +128,10 @@ export default function ArenaGrid() {
     const [nodes, setNodes] = useState(arenaGraph.getNodesInArena());
 
     useEffect(() => {
-        setEdges(arenaGraph.getCombinedEdges());
-        setNodes(arenaGraph.getNodesInArena());
+        dispatcher.updateArenaGrid(() => {
+            setEdges(arenaGraph.getCombinedEdges());
+            setNodes(arenaGraph.getNodesInArena());
+        });
     }, []);
 
     return (

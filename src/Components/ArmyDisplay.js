@@ -36,7 +36,7 @@ export default function DisplayArmy({ colorScheme }) {
 				onPointerOver={onPointerOverHandler}
 				onPointerOut={onPointerOutHandler}
 			>
-				{gameState.getStartingPoses(1).map((startingPose, index) => {
+				{gameState.getStartingPoses(0).map((startingPose, index) => {
 					return (
 						<SoldierCone
 							key={index}
