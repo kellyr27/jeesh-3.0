@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Stage, Layer, Rect, Line, Text } from "react-konva";
 import selectionPanelController from "../../Classes/SelectionPanel";
 
-const Square = ({ x, y, isSelected, onSelect, xOffset, yOffset }) => {
+const Square = ({ x, y, isSelected, onSelect, xOffset, yOffset}) => {
     const [isHovered, setIsHovered] = useState(false);
     
 

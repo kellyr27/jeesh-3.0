@@ -3,6 +3,8 @@
  * Key2: To Direction
  */
 
+import { addCoords } from "../globals"
+
 // TODO : Fix as they are incorrect
 const TRAPEZOID_DIRECTIONS = {
     '-y': {
@@ -172,6 +174,38 @@ const getOppositeDirection = (direction) => {
     }
 }
 
+const DIRECTIONS_OFFSETS = {
+    '-x': [-1,0,0],
+    '+x': [1,0,0],
+    '-y': [0,-1,0],
+    '+y': [0,1,0],
+    '-z': [0,0,-1],
+    '+z': [0,0,1]
+}
+
+const offsetAddition = (xOffset, yOffset, displayDirections) => {
+    if (xOffset === -1 && yOffset === -1) {
+        return addCoords(DIRECTIONS_OFFSETS[displayDirections.left], DIRECTIONS_OFFSETS[displayDirections.top], DIRECTIONS_OFFSETS[displayDirections.center])
+    } else if (xOffset === 0 && yOffset === -1) {
+        return addCoords(DIRECTIONS_OFFSETS[displayDirections.top], DIRECTIONS_OFFSETS[displayDirections.center])
+    } else if (xOffset === 1 && yOffset === -1) {
+        return addCoords(DIRECTIONS_OFFSETS[displayDirections.right], DIRECTIONS_OFFSETS[displayDirections.top], DIRECTIONS_OFFSETS[displayDirections.center])
+    } else if (xOffset === -1 && yOffset === 0) {
+        return addCoords(DIRECTIONS_OFFSETS[displayDirections.left], DIRECTIONS_OFFSETS[displayDirections.center])
+    } else if (xOffset === 0 && yOffset === 0) {
+        return addCoords(DIRECTIONS_OFFSETS[displayDirections.center])
+    } else if (xOffset === 1 && yOffset === 0) {
+        return addCoords(DIRECTIONS_OFFSETS[displayDirections.right], DIRECTIONS_OFFSETS[displayDirections.center])
+    } else if (xOffset === -1 && yOffset === 1) {
+        return addCoords(DIRECTIONS_OFFSETS[displayDirections.left], DIRECTIONS_OFFSETS[displayDirections.bottom], DIRECTIONS_OFFSETS[displayDirections.center])
+    } else if (xOffset === 0 && yOffset === 1) {
+        return addCoords(DIRECTIONS_OFFSETS[displayDirections.bottom], DIRECTIONS_OFFSETS[displayDirections.center])
+    } else if (xOffset === 1 && yOffset === 1) {
+        return addCoords(DIRECTIONS_OFFSETS[displayDirections.right], DIRECTIONS_OFFSETS[displayDirections.bottom], DIRECTIONS_OFFSETS[displayDirections.center])
+    }
+
+}
+
 class SelectionPanelController {
     constructor () {
         this.selectedSoldierIndex = -1
@@ -204,6 +238,18 @@ class SelectionPanelController {
 
     resetSelectionPanel () {
         this.updateDisplayDirections('+y','+x','-y','-x','-z')
+    }
+
+    checkIfSquareAvailable(xOffset, yOffset) {
+        if (this.currentPose) {
+            if (this.displayDirections.center === '+x') {
+                const possibleMove = {
+                    position: addCoords(this.currentPose.position, [1, 0, 0]),
+                }
+            }
+        } else {
+            return false
+        }
     }
 
 
