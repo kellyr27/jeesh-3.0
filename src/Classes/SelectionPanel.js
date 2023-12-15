@@ -175,12 +175,12 @@ const getOppositeDirection = (direction) => {
 class SelectionPanelController {
     constructor () {
         this.selectedSoldierIndex = -1
-        this.previousFace = '-y'
-        this.currentFace = '-z'
         this.isHovered = false
         this.mouseXOffset = 0
         this.mouseYOffset = 0
         this.resetSelectionPanel()
+        this.possibleMoves = []
+        this.currentPose = null
     }
 
     updateDisplayDirections (top, right, bottom, left, center) {
@@ -206,8 +206,22 @@ class SelectionPanelController {
         this.updateDisplayDirections('+y','+x','-y','-x','-z')
     }
 
+
+    setPossibleMoves (possibleMoves) {
+        this.possibleMoves = possibleMoves
+    }
+
+    setCurrentPose (currentPose) {
+        this.currentPose = currentPose
+    }
+
     setSelectedSoldierIndex (index) {
         this.selectedSoldierIndex = index
+
+        if (index === -1) {
+            this.possibleMoves = []
+            this.currentPose = null
+        }
         this.resetSelectionPanel()
     }
 

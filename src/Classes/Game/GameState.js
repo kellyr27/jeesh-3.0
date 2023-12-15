@@ -1,5 +1,5 @@
 import Army from "./Army"
-import { ARENA_SPECS, generateRandomInt, positionInArray, checkIfInArena, equalPositions } from "../../globals"
+import { ARENA_SPECS, generateRandomInt, positionInArray, checkIfInArena, equalPositions, addCoords } from "../../globals"
 import arenaGraph from "../Arena/Arena"
 
 export function generateRandomStarCoordinate() {
@@ -198,6 +198,72 @@ class GameState {
         const army2Positions = this.armies[ARMY_NUM_TO_INDEX[2]].getPositions(moveNum)
 
         return [...army1Positions, ...army2Positions]
+    }
+
+    // Returns a list of all the positions of the soldiers in the Army 1 army
+    getPossibleSoldierMoves (soldierNum) {
+        //TODO: Make it general for all armies
+
+        const {position: soldierPosition} = this.armies[ARMY_NUM_TO_INDEX[1]].getSoldierPose(soldierNum, this.currentMoveNum)
+        const obstaclePositions = [...this.getAllArmyPositions(this.currentMoveNum), ...this.getStarPositions()]
+        const possibleSoldierMoves = []
+
+        for (let x = -1; x < 2; x++) {
+            for (let y = -1; y < 2; y++) {
+                for (let z = -1; z < 2; z++) {
+
+                    const possibleMove = addCoords(soldierPosition,[x, y, z])
+
+                    // Check if the position is outside the arena
+                    if (!checkIfInArena(possibleMove)) {
+                        continue
+                    }
+
+                    // Check if the position is occupied by another soldier or a star
+                    if (positionInArray(possibleMove, obstaclePositions)) {
+                        continue
+                    }
+
+                    if (x === 1) {
+                        possibleSoldierMoves.push({
+                            position: possibleMove,
+                            direction: '+x'
+                        })
+                    } else if (x === -1) {
+                        possibleSoldierMoves.push({
+                            position: possibleMove,
+                            direction: '-x'
+                        })
+                    } else if (y === 1) {
+                        possibleSoldierMoves.push({
+                            position: possibleMove,
+                            direction: '+y'
+                        })
+                    } else if (y === -1) {
+                        possibleSoldierMoves.push({
+                            position: possibleMove,
+                            direction: '-y'
+                        })
+                    } else if (z === 1) {
+                        possibleSoldierMoves.push({
+                            position: possibleMove,
+                            direction: '+z'
+                        })
+                    } else if (z === -1) {
+                        possibleSoldierMoves.push({
+                            position: possibleMove,
+                            direction: '-z'
+                        })
+                    }
+                }
+            }
+        }
+
+        return possibleSoldierMoves
+    }
+
+    getCurrentSoldierPose(armyNum, soldierNum) {
+        return this.armies[ARMY_NUM_TO_INDEX[armyNum]].getSoldierPose(soldierNum, this.currentMoveNum)
     }
 }
 

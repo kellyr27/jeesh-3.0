@@ -1,4 +1,3 @@
-import selectionPanelController from "./SelectionPanel"
 class UserRaycaster {
     constructor () {
         this.selectedIndex = -1
@@ -27,7 +26,10 @@ class UserRaycaster {
 
     setSelectedIndex(index) {
         this.selectedIndex = index
-        selectionPanelController.setSelectedSoldierIndex(index)
+    }
+
+    getSelectedIndex() {
+        return this.selectedIndex
     }
 
     updateOnClick (newIndex, newObject) {

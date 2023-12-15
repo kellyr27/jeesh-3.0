@@ -19,8 +19,22 @@ class Dispatcher {
         }
     }
 
-    updateSelectionPanel (callback) {
+    updateSelectionPanelTrapezoidClick (callback) {
         
+    }
+
+    updateSelectionPanelSoldierClick (callback) {
+        const newSelectedSoldierIndex = raycaster.getSelectedIndex()
+        selectionPanelController.setSelectedSoldierIndex(newSelectedSoldierIndex)
+
+        // This means that currently a Soldier is selected
+        if (newSelectedSoldierIndex !== -1) {
+            const soldierCurrentPose = gameState.getCurrentSoldierPose(1, newSelectedSoldierIndex)
+            const soldierPossibleMoves = gameState.getPossibleSoldierMoves(newSelectedSoldierIndex)
+            selectionPanelController.setPossibleMoves(soldierPossibleMoves)
+            selectionPanelController.setCurrentPose(soldierCurrentPose)
+            console.log(soldierPossibleMoves.length)
+        }
     }
 }
 

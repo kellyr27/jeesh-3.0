@@ -41,4 +41,9 @@ export default class Army {
             return pose.position
         })
     }
+
+    // Get pose of a Soldier at a given move
+    getSoldierPose(soldierNum, moveNum) {
+        return this.soldiers[soldierNum].getPose(moveNum)
+    }
 }

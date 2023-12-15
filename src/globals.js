@@ -29,7 +29,13 @@ export function centerCoords (coords) {
     return coords.map((coord) => {
         return centerCoord(coord)
     })
+}
 
+// Add two coordinates together
+export function addCoords(coord1, coord2) {
+    const [x1, y1, z1] = coord1
+    const [x2, y2, z2] = coord2
+    return [x1 + x2, y1 + y2, z1 + z2]
 }
 
 /**

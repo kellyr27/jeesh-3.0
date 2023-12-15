@@ -1,6 +1,7 @@
 import SoldierCone from "./SoldierCone";
 import raycaster from "../Classes/Raycaster";
 import gameState from "../Classes/Game/GameState";
+import dispatcher from "../Classes/Dispatcher";
 
 export default function DisplayArmy({ colorScheme }) {
 
@@ -9,7 +10,7 @@ export default function DisplayArmy({ colorScheme }) {
 		const obj = e.intersections[0].object;
 
 		raycaster.updateOnClick(soldierId, obj);
-
+		dispatcher.updateSelectionPanelSoldierClick()
 		e.stopPropagation();
 	};
 
