@@ -1,102 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Stage, Layer, Rect, Line, Text } from "react-konva";
 import selectionPanelController from "../Classes/SelectionPanel";
-
-const Square = ({ x, y, isSelected, onSelect, xOffset, yOffset }) => {
-    const [isHovered, setIsHovered] = useState(false);
-    
-
-    const handleMouseEnter = () => {
-        setIsHovered(true);
-        selectionPanelController.setMouseOffsets(xOffset, yOffset)
-    };
-
-    const handleMouseLeave = () => {
-        setIsHovered(false);
-
-    };
-
-    const handleClick = () => {
-        onSelect(x, y, xOffset, yOffset);
-    };
-
-    return (
-        <Rect
-            x={x}
-            y={y}
-            width={150 / 3}
-            height={150 / 3}
-            fill={isSelected ? "blue" : isHovered ? "green" : "white"}
-            stroke="black"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            onClick={handleClick}
-        />
-    );
-};
-
-const Trapezoid = ({
-    direction,
-    points,
-    fill,
-    isHovered,
-    isSelected,
-    onHover,
-    onSelect,
-}) => {
-    const handleMouseEnter = () => {
-        onHover(points);
-    };
-
-    const handleMouseLeave = () => {
-        onHover(null);
-    };
-
-    const handleClick = () => {
-        onSelect(points, direction);
-    };
-
-    return (
-        <Line
-            points={points}
-            fill={isSelected ? "blue" : isHovered ? "green" : fill}
-            closed
-            stroke="black"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            onClick={handleClick}
-        />
-    );
-};
-
-const PanelText = ({ text, fontSize, fontFamily, fill, x, y }) => {
-    const textRef = useRef();
-
-    useEffect(() => {
-        if (textRef.current) {
-            const textWidth = textRef.current.width();
-            const textHeight = textRef.current.height();
-            textRef.current.offsetX(textWidth / 2);
-            textRef.current.offsetY(textHeight / 2);
-        }
-    }, [text]);
-
-    return (
-        <Text
-            ref={textRef}
-            x={x} // Half the width of the canvas
-            y={y} // Half the height of the canvas
-            text={text}
-            fontSize={fontSize}
-            fontFamily={fontFamily}
-            fill={fill}
-            align="center"
-            listening={false}
-        />
-    );
-};
-
-
+import dispatcher from "../Classes/Dispatcher";
+import Square from "./SelectionPanel/Square";
+import Trapezoid from "./SelectionPanel/Trapezoid";
+import PanelText from "./SelectionPanel/PanelText";
 
 const SelectionPanel = () => {
     const [selectedSquare, setSelectedSquare] = useState({ x: null, y: null });
@@ -187,13 +95,6 @@ const SelectionPanel = () => {
     const handleTrapezoidHover = (points) => {
         setHoveredTrapezoid(points);
     };
-
-    const [currentDirections, setCurrentDirections] = useState(selectionPanelController.displayDirections);
-
-    useEffect(() => {
-        selectionPanelController.setUpdateCallback(setCurrentDirections);
-    }, [])
-
 
     return (
         <Stage

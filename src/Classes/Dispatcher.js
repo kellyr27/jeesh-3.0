@@ -18,6 +18,10 @@ class Dispatcher {
             callback()
         }
     }
+
+    updateSelectionPanel (callback) {
+        
+    }
 }
 
 const dispatcher = new Dispatcher()

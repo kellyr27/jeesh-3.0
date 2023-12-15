@@ -180,27 +180,7 @@ class SelectionPanelController {
         this.isHovered = false
         this.mouseXOffset = 0
         this.mouseYOffset = 0
-        this.updateCurrentDirection()
-        this.updateCallback = null
         this.resetSelectionPanel()
-    }
-
-    // Used to update the text on the Selection Panel
-    setUpdateCallback(callback) {
-        this.updateCallback = callback;
-    }
-
-    // Updated when clicking on a trapezoid
-    updateCurrentFace (direction) {
-        this.updateFaceAndDirections(this.currentFace, this.currentDirections[direction])
-    }
-
-    // TODO: Update SelectionPanel display when this is called
-    updateCurrentDirection () {
-        this.currentDirections = {...TRAPEZOID_DIRECTIONS[this.previousFace][this.currentFace], 'center': this.currentFace}
-        if (this.updateCallback) {
-            this.updateCallback(this.currentDirections);
-        }
     }
 
     updateDisplayDirections (top, right, bottom, left, center) {
@@ -211,16 +191,6 @@ class SelectionPanelController {
             left: left,
             center: center
         }
-        if (this.updateCallback) {
-            this.updateCallback(this.displayDirections);
-        }
-    }
-
-
-    updateFaceAndDirections (previousFace, currentFace) {
-        this.previousFace = previousFace
-        this.currentFace = currentFace
-        this.updateCurrentDirection()
     }
 
     getText () {
