@@ -3,7 +3,7 @@
  * Key2: To Direction
  */
 
-import { addCoords } from "../globals"
+import { addCoords, poseInArray } from "../globals"
 
 // TODO : Fix as they are incorrect
 const TRAPEZOID_DIRECTIONS = {
@@ -184,6 +184,7 @@ const DIRECTIONS_OFFSETS = {
 }
 
 const offsetAddition = (xOffset, yOffset, displayDirections) => {
+
     if (xOffset === -1 && yOffset === -1) {
         return addCoords(DIRECTIONS_OFFSETS[displayDirections.left], DIRECTIONS_OFFSETS[displayDirections.top], DIRECTIONS_OFFSETS[displayDirections.center])
     } else if (xOffset === 0 && yOffset === -1) {
@@ -242,10 +243,15 @@ class SelectionPanelController {
 
     checkIfSquareAvailable(xOffset, yOffset) {
         if (this.currentPose) {
-            if (this.displayDirections.center === '+x') {
-                const possibleMove = {
-                    position: addCoords(this.currentPose.position, [1, 0, 0]),
-                }
+            const possibleMovePose = {
+                position: addCoords(offsetAddition(xOffset, yOffset, this.displayDirections), this.currentPose.position), 
+                direction: this.displayDirections.center
+            }
+            console.log(this.possibleMoves)
+            if (poseInArray(possibleMovePose, this.possibleMoves)) {
+                return true
+            } else {
+                return false
             }
         } else {
             return false

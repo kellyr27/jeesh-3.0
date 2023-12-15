@@ -26,7 +26,16 @@ const Square = ({ x, y, isSelected, onSelect, xOffset, yOffset}) => {
             y={y}
             width={150 / 3}
             height={150 / 3}
-            fill={isSelected ? "blue" : isHovered ? "green" : "white"}
+            // fill={isSelected ? "blue" : isHovered ? "green" : "white"}
+            fill={
+                isSelected 
+                    ? "blue" 
+                    : isHovered 
+                        ? "green" 
+                        : selectionPanelController.checkIfSquareAvailable(xOffset, yOffset) 
+                            ? "white" 
+                            : "red" // replace "red" with the color you want when the square is not available
+            }
             stroke="black"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}

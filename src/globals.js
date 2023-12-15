@@ -32,10 +32,14 @@ export function centerCoords (coords) {
 }
 
 // Add two coordinates together
-export function addCoords(coord1, coord2) {
-    const [x1, y1, z1] = coord1
-    const [x2, y2, z2] = coord2
-    return [x1 + x2, y1 + y2, z1 + z2]
+export function addCoords(...coords) {
+    return coords.reduce((total, coord) => {
+        const [x, y, z] = coord;
+        total[0] += x;
+        total[1] += y;
+        total[2] += z;
+        return total;
+    }, [0, 0, 0]);
 }
 
 /**
@@ -83,6 +87,21 @@ export function positionInArray(checkPosition, positionsList) {
         }
     }
     return false
+}
+
+export function poseInArray (checkPose, posesList) {
+    console.log('-----------')
+
+    console.log(checkPose)
+    console.log(posesList)
+    for (const pose of posesList) {
+        if (equalCoords(pose.position, checkPose.position) && (pose.direction === checkPose.direction)) {
+            console.log('true')
+            return true
+        }
+    }
+    return false
+
 }
 
 export function removeDuplicatesPositions (positionsList) {
