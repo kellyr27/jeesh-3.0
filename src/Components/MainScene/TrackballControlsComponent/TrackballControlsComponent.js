@@ -2,7 +2,7 @@ import { TrackballControls } from "@react-three/drei";
 
 const TrackballControlsComponent = () => {
     return (
-        <TrackballControls makeDefault rotateSpeed="3" />
+        <TrackballControls makeDefault rotateSpeed="5" maxDistance="700" />
     );
 }
 
