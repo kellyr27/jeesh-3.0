@@ -150,7 +150,8 @@ class GameState {
 
     constructor() {
         this.armies = [new Army(createRandomArmy1()), new Army(ARMY2_STARTING_POSES)]
-        this.starCoordinates = this.#createStarPositions()
+        this.starCoordinates = [[6,6,9]]
+        // this.starCoordinates = this.#createStarPositions()
         this.currentMoveNum = 1
         this.currentArmyNum = 1
     }
@@ -229,27 +230,32 @@ class GameState {
                             position: possibleMove,
                             direction: '+x'
                         })
-                    } else if (x === -1) {
+                    } 
+                    if (x === -1) {
                         possibleSoldierMoves.push({
                             position: possibleMove,
                             direction: '-x'
                         })
-                    } else if (y === 1) {
+                    } 
+                    if (y === 1) {
                         possibleSoldierMoves.push({
                             position: possibleMove,
                             direction: '+y'
                         })
-                    } else if (y === -1) {
+                    } 
+                    if (y === -1) {
                         possibleSoldierMoves.push({
                             position: possibleMove,
                             direction: '-y'
                         })
-                    } else if (z === 1) {
+                    } 
+                    if (z === 1) {
                         possibleSoldierMoves.push({
                             position: possibleMove,
                             direction: '+z'
                         })
-                    } else if (z === -1) {
+                    } 
+                    if (z === -1) {
                         possibleSoldierMoves.push({
                             position: possibleMove,
                             direction: '-z'

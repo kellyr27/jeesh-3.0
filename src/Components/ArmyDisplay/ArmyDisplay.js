@@ -1,9 +1,9 @@
 import SoldierCone from "./SoldierCone";
-import raycaster from "../Classes/Raycaster";
-import gameState from "../Classes/Game/GameState";
-import dispatcher from "../Classes/Dispatcher";
+import raycaster from "../../Classes/Raycaster";
+import gameState from "../../Classes/Game/GameState";
+import dispatcher from "../../Classes/Dispatcher";
 
-export default function DisplayArmy({ colorScheme }) {
+const ArmyDisplay = ({ colorScheme }) => {
 
 	const onClickHandler = (e) => {
 		const soldierId = e.intersections[0].object.soldierId;
@@ -52,3 +52,5 @@ export default function DisplayArmy({ colorScheme }) {
 		</>
 	);
 }
+
+export default ArmyDisplay

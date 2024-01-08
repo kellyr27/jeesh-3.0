@@ -33,7 +33,6 @@ class Dispatcher {
             const soldierPossibleMoves = gameState.getPossibleSoldierMoves(newSelectedSoldierIndex)
             selectionPanelController.setPossibleMoves(soldierPossibleMoves)
             selectionPanelController.setCurrentPose(soldierCurrentPose)
-            console.log(soldierPossibleMoves.length)
         }
     }
 }

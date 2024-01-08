@@ -3,15 +3,18 @@ import React from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { Stars } from "@react-three/drei";
+import StarBackground from "./StarBackground/StarBackgroud";
 import { TrackballControls } from "@react-three/drei";
-import StarField from "./StarField";
-import ArenaGrid from "./ArenaGrid";
-import raycaster from "../Classes/Raycaster";
+import TrackballControlsComponent from "./TrackballControlsComponent/TrackballControlsComponent";
+import StarField from "../StarField/StarField";
+import ArenaGrid from "../ArenaGrid";
+import ArenaDisplay from "../ArenaDisplay/ArenaDisplay";
+import raycaster from "../../Classes/Raycaster";
 import { useControls } from "leva";
 import { AxesHelper } from "three";
-import AxesHelperComponent from "./AxesHelper";
-import DisplayArmy from "./ArmyDisplay";
-import gameState from "../Classes/Game/GameState";
+import AxesHelperComponent from "../AxesHelper";
+import ArmyDisplay from "../ArmyDisplay/ArmyDisplay";
+import gameState from "../../Classes/Game/GameState";
 
 const createAxesHelper = () => {
     return new AxesHelper(20);
@@ -24,59 +27,6 @@ const updateAxesHelperVisibility = (axesHelper, isVisible) => {
 };
 
 const MainScene = () => {
-    const starPositions = [
-        [0, 0, 0],
-        [2, 2, 2],
-        [2, 3, 3],
-    ];
-
-    const army1StartingPoses = [
-        {
-            position: [4, 5, 10],
-            direction: [0, 0, -1]
-        },
-        {
-            position: [5, 5, 10],
-            direction: [0, 0, -1]
-        },
-        {
-            position: [6, 5, 10],
-            direction: [0, 0, -1]
-        },
-        {
-            position: [5, 4, 10],
-            direction: [0, 0, -1]
-        },
-        {
-            position: [5, 6, 10],
-            direction: [0, 0, -1]
-        },
-    ]
-
-    const army2StartingPoses = [
-        {
-            position: [4, 5, 0],
-            direction: [0, 0, 1]
-        },
-        {
-            position: [5, 5, 0],
-            direction: [0, 0, 1]
-        },
-        {
-            position: [6, 5, 0],
-            direction: [0, 0, 1]
-        },
-        {
-            position: [5, 4, 0],
-            direction: [0, 0, 1]
-        },
-        {
-            position: [5, 6, 0],
-            direction: [0, 0, 1]
-        },
-    ]
-
-    // gameState.startGame(army1StartingPoses, army2StartingPoses, starPositions)
 
     const axesHelper = createAxesHelper();
 
@@ -103,22 +53,13 @@ const MainScene = () => {
 
     return (
         <Canvas onContextMenu={onContextMenuHandler} style={{ width: '100vw', height: '100vh' }}>
-            <color attach="background" args={["#191920"]} />
-            <Stars
-                radius={100}
-                depth={50}
-                count={5000}
-                factor={4}
-                saturation={0}
-                fade
-                speed={1}
-            />
-            <TrackballControls makeDefault rotateSpeed="3" />
+            <StarBackground />
+            <TrackballControlsComponent />
             {/* <axesHelper args={[20]} /> */}
             {/* <AxesHelperComponent axesHelper={axesHelper} /> */}
-            <ArenaGrid />
-            <StarField starCoords={gameState.getStarPositions()} />
-            <DisplayArmy colorScheme={{colorNormal, colorHovered, colorSelected}}/>
+            {/* <ArenaDisplay /> */}
+            {/* <StarField starCoords={gameState.getStarPositions()} /> */}
+            {/* <ArmyDisplay colorScheme={{colorNormal, colorHovered, colorSelected}}/> */}
             {/* <SoldierCone initialPosition={[[5,5,10],[0,0,1]]} soldierId={[0,1]}/>
                 <SoldierCone initialPosition={[[4,5,10],[0,0,1]]} soldierId={[0,2]}/> */}
             {/* <QuadraticBezierLine 

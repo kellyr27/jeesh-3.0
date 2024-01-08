@@ -249,8 +249,10 @@ class SelectionPanelController {
             }
             console.log(this.possibleMoves)
             if (poseInArray(possibleMovePose, this.possibleMoves)) {
+                console.log('Is available',possibleMovePose)
                 return true
             } else {
+                console.log('Is NOT available',possibleMovePose)
                 return false
             }
         } else {

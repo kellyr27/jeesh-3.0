@@ -9,6 +9,7 @@ const Square = ({ x, y, isSelected, onSelect, xOffset, yOffset}) => {
     const handleMouseEnter = () => {
         setIsHovered(true);
         selectionPanelController.setMouseOffsets(xOffset, yOffset)
+        selectionPanelController.checkIfSquareAvailable(xOffset, yOffset)
     };
 
     const handleMouseLeave = () => {

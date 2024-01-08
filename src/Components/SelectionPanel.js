@@ -103,7 +103,7 @@ const SelectionPanel = () => {
             style={{
                 position: "absolute",
                 bottom: 20,
-                right: 20,
+                left: 20,
                 background: "white",
             }}
         >
@@ -126,8 +126,8 @@ const SelectionPanel = () => {
                             key={`${i}-${j}`}
                             xOffset={i-1}
                             yOffset={-(j-1)}
-                            x={50 + (i * 150) / 3}
-                            y={50 + (j * 150) / 3}
+                            x={depthTrapezoid + (i * (width - 2*depthTrapezoid)) / 3}
+                            y={depthTrapezoid + (j * (height - 2*depthTrapezoid)) / 3}
                             isSelected={
                                 selectedSquare.x === 50 + (i * 150) / 3 &&
                                 selectedSquare.y === 50 + (j * 150) / 3

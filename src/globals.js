@@ -90,13 +90,9 @@ export function positionInArray(checkPosition, positionsList) {
 }
 
 export function poseInArray (checkPose, posesList) {
-    console.log('-----------')
 
-    console.log(checkPose)
-    console.log(posesList)
     for (const pose of posesList) {
         if (equalCoords(pose.position, checkPose.position) && (pose.direction === checkPose.direction)) {
-            console.log('true')
             return true
         }
     }
