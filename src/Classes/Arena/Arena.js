@@ -2,7 +2,6 @@ import { checkIfInArena, ARENA_SPECS} from "../../globals"
 import CubeNode from "./CubeNode"
 import LineEdge from "./LineEdge"
 import CombinedEdge from "./CombinedEdge"
-import gameState from "../Game/GameState"
 
 /**
  * Checks if an Edge exists between two coordinates

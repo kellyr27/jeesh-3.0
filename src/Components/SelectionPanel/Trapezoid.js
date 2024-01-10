@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Stage, Layer, Rect, Line, Text } from "react-konva";
+import React from "react";
+import {  Line } from "react-konva";
 
 const Trapezoid = ({
     direction,

@@ -1,7 +1,6 @@
 // MainScene.js
 import React from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
 import { Stars } from "@react-three/drei";
 import { TrackballControls } from "@react-three/drei";
 import StarField from "./StarField";
@@ -9,7 +8,6 @@ import ArenaGrid from "./ArenaGrid";
 import raycaster from "../Classes/Raycaster";
 import { useControls } from "leva";
 import { AxesHelper } from "three";
-import AxesHelperComponent from "./AxesHelper";
 import DisplayArmy from "./ArmyDisplay";
 import gameState from "../Classes/Game/GameState";
 
@@ -24,57 +22,57 @@ const updateAxesHelperVisibility = (axesHelper, isVisible) => {
 };
 
 const MainScene = () => {
-    const starPositions = [
-        [0, 0, 0],
-        [2, 2, 2],
-        [2, 3, 3],
-    ];
+    // const starPositions = [
+    //     [0, 0, 0],
+    //     [2, 2, 2],
+    //     [2, 3, 3],
+    // ];
 
-    const army1StartingPoses = [
-        {
-            position: [4, 5, 10],
-            direction: [0, 0, -1]
-        },
-        {
-            position: [5, 5, 10],
-            direction: [0, 0, -1]
-        },
-        {
-            position: [6, 5, 10],
-            direction: [0, 0, -1]
-        },
-        {
-            position: [5, 4, 10],
-            direction: [0, 0, -1]
-        },
-        {
-            position: [5, 6, 10],
-            direction: [0, 0, -1]
-        },
-    ]
+    // const army1StartingPoses = [
+    //     {
+    //         position: [4, 5, 10],
+    //         direction: [0, 0, -1]
+    //     },
+    //     {
+    //         position: [5, 5, 10],
+    //         direction: [0, 0, -1]
+    //     },
+    //     {
+    //         position: [6, 5, 10],
+    //         direction: [0, 0, -1]
+    //     },
+    //     {
+    //         position: [5, 4, 10],
+    //         direction: [0, 0, -1]
+    //     },
+    //     {
+    //         position: [5, 6, 10],
+    //         direction: [0, 0, -1]
+    //     },
+    // ]
 
-    const army2StartingPoses = [
-        {
-            position: [4, 5, 0],
-            direction: [0, 0, 1]
-        },
-        {
-            position: [5, 5, 0],
-            direction: [0, 0, 1]
-        },
-        {
-            position: [6, 5, 0],
-            direction: [0, 0, 1]
-        },
-        {
-            position: [5, 4, 0],
-            direction: [0, 0, 1]
-        },
-        {
-            position: [5, 6, 0],
-            direction: [0, 0, 1]
-        },
-    ]
+    // const army2StartingPoses = [
+    //     {
+    //         position: [4, 5, 0],
+    //         direction: [0, 0, 1]
+    //     },
+    //     {
+    //         position: [5, 5, 0],
+    //         direction: [0, 0, 1]
+    //     },
+    //     {
+    //         position: [6, 5, 0],
+    //         direction: [0, 0, 1]
+    //     },
+    //     {
+    //         position: [5, 4, 0],
+    //         direction: [0, 0, 1]
+    //     },
+    //     {
+    //         position: [5, 6, 0],
+    //         direction: [0, 0, 1]
+    //     },
+    // ]
 
     // gameState.startGame(army1StartingPoses, army2StartingPoses, starPositions)
 

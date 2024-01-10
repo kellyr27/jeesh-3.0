@@ -1,8 +1,8 @@
 import { Line, Box } from '@react-three/drei';
-import { ARENA_SPECS, offsetCoord, offsetCoords, centerCoord, centerCoords } from '../globals'
+import { ARENA_SPECS, centerCoord, centerCoords } from '../globals'
 import arenaGraph from '../Classes/Arena/Arena'
 import React, { useState, useEffect } from 'react'
-import { useControls, folder } from 'leva'
+import { useControls} from 'leva'
 import dispatcher from '../Classes/Dispatcher';
 
 const DISPLAY_NODE_TO_COLOR_SCHEME = {
@@ -121,8 +121,8 @@ export default function ArenaGrid() {
     // const edges = arenaGraph.getCombinedEdges()
     // const nodes = arenaGraph.getNodesInArena()
 
-    const [nodeControls, setNodeControls] = useControls(() => (generateControlsFromScheme(NODE_COLOR_SCHEME, CONTROL_SCHEME_TITLES.NODE_COLOR_SCHEME)));
-    const [edgeControls, setEdgeControls] = useControls(() => (generateControlsFromScheme(EDGE_COLOR_SCHEME, CONTROL_SCHEME_TITLES.EDGE_COLOR_SCHEME)));
+    const [nodeControls] = useControls(() => (generateControlsFromScheme(NODE_COLOR_SCHEME, CONTROL_SCHEME_TITLES.NODE_COLOR_SCHEME)));
+    const [edgeControls] = useControls(() => (generateControlsFromScheme(EDGE_COLOR_SCHEME, CONTROL_SCHEME_TITLES.EDGE_COLOR_SCHEME)));
 
     const [edges, setEdges] = useState(arenaGraph.getCombinedEdges());
     const [nodes, setNodes] = useState(arenaGraph.getNodesInArena());

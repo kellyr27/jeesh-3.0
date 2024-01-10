@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Stage, Layer, Rect, Line, Text } from "react-konva";
+import React, {  useRef, useEffect } from "react";
+import {  Text } from "react-konva";
 
 const PanelText = ({ text, fontSize, fontFamily, fill, x, y }) => {
     const textRef = useRef();

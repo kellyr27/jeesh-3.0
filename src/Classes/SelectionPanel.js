@@ -6,164 +6,164 @@
 import { addCoords, poseInArray } from "../globals"
 
 // TODO : Fix as they are incorrect
-const TRAPEZOID_DIRECTIONS = {
-    '-y': {
-        '-z': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        },
-        '+z': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        },
-        '-x': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        },
-        '+x': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        }
-    },
-    '+y': {
-        '+z': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        },
-        '-z': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        },
-        '+x': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        },
-        '-x': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        }
-    },
-    '-z': {
-        '+y': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        },
-        '-y': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        },
-        '+x': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        },
-        '-x': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        }
-    },
-    '+z': {
-        '-y': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        },
-        '+y': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        },
-        '-x': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        },
-        '+x': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        }
-    },
-    '-x': {
-        '-y': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        },
-        '+y': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        },
-        '-z': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        },
-        '+z': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        }
-    },
-    '+x': {
-        '+y': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        },
-        '-y': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        },
-        '+z': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        },
-        '-z': {
-            top: '',
-            right: '',
-            bottom: '',
-            left: ''
-        }
-    }
-}
+// const TRAPEZOID_DIRECTIONS = {
+//     '-y': {
+//         '-z': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         },
+//         '+z': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         },
+//         '-x': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         },
+//         '+x': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         }
+//     },
+//     '+y': {
+//         '+z': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         },
+//         '-z': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         },
+//         '+x': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         },
+//         '-x': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         }
+//     },
+//     '-z': {
+//         '+y': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         },
+//         '-y': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         },
+//         '+x': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         },
+//         '-x': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         }
+//     },
+//     '+z': {
+//         '-y': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         },
+//         '+y': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         },
+//         '-x': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         },
+//         '+x': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         }
+//     },
+//     '-x': {
+//         '-y': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         },
+//         '+y': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         },
+//         '-z': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         },
+//         '+z': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         }
+//     },
+//     '+x': {
+//         '+y': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         },
+//         '-y': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         },
+//         '+z': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         },
+//         '-z': {
+//             top: '',
+//             right: '',
+//             bottom: '',
+//             left: ''
+//         }
+//     }
+// }
 
 const getOppositeDirection = (direction) => {
     const [polarity, axis] = direction

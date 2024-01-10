@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Stage, Layer, Rect, Line, Text } from "react-konva";
+import React, { useState } from "react";
+import { Stage, Layer } from "react-konva";
 import selectionPanelController from "../Classes/SelectionPanel";
-import dispatcher from "../Classes/Dispatcher";
 import Square from "./SelectionPanel/Square";
 import Trapezoid from "./SelectionPanel/Trapezoid";
 import PanelText from "./SelectionPanel/PanelText";

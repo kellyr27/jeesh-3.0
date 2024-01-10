@@ -1,6 +1,5 @@
 import Army from "./Army"
-import { ARENA_SPECS, generateRandomInt, positionInArray, checkIfInArena, equalPositions, addCoords } from "../../globals"
-import arenaGraph from "../Arena/Arena"
+import { ARENA_SPECS, generateRandomInt, positionInArray, checkIfInArena, addCoords } from "../../globals"
 
 export function generateRandomStarCoordinate() {
     return [
@@ -10,28 +9,28 @@ export function generateRandomStarCoordinate() {
     ]
 }
 
-const ARMY1_STARTING_POSES = [
-    {
-        position: [4, 5, 10],
-        direction: '-z'
-    },
-    {
-        position: [5, 5, 10],
-        direction: '-z'
-    },
-    {
-        position: [6, 5, 10],
-        direction: '-z'
-    },
-    {
-        position: [5, 4, 10],
-        direction: '-z'
-    },
-    {
-        position: [5, 6, 10],
-        direction: '-z'
-    },
-]
+// const ARMY1_STARTING_POSES = [
+//     {
+//         position: [4, 5, 10],
+//         direction: '-z'
+//     },
+//     {
+//         position: [5, 5, 10],
+//         direction: '-z'
+//     },
+//     {
+//         position: [6, 5, 10],
+//         direction: '-z'
+//     },
+//     {
+//         position: [5, 4, 10],
+//         direction: '-z'
+//     },
+//     {
+//         position: [5, 6, 10],
+//         direction: '-z'
+//     },
+// ]
 
 function getRandomValueFromArray(array) {
     const randomIndex = Math.floor(Math.random() * array.length);

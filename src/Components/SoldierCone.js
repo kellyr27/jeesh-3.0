@@ -1,6 +1,6 @@
-import { offsetCoord, centerCoord } from "../globals"
+import { centerCoord } from "../globals"
 import { useRef } from "react"
-import { arrayEquals } from "../globals"
+
 
 const directionToRotation = (direction) => {
     if (direction === '+z') {
@@ -21,7 +21,7 @@ const directionToRotation = (direction) => {
 export default function SoldierCone({initialPosition, soldierId, colorScheme, initialPose}) {
     
     const ref = useRef()
-    const {colorNormal, colorHovered, colorSelected} = colorScheme
+    const {colorNormal} = colorScheme
     const {position, direction} = initialPose
 
     return (
